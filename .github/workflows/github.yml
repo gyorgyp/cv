@@ -59,11 +59,11 @@ jobs:
     - name: Download source
       uses: actions/checkout@v4
 
-    - name: HTML to PDF by Puppeteer /PDF Action/
-      uses: ferdinandkeller/html-to-pdf-action@v1
-      with:
-        html_file: "index.html"
-        output_pdf: "CV_Peter_GYORGY.pdf"
+    - name: Install wkhtmltopdf
+      run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
+
+    - name: Convert HTML to PDF
+      run: wkhtmltopdf index.html CV_Peter_GYORGY.pdf
 
     - name: Upload PDF to GitHub as artifact
       uses: actions/upload-artifact@v4
