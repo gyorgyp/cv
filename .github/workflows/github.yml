@@ -51,3 +51,22 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+  html_to_pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download source
+      uses: actions/checkout@v4
+
+    - name: HTML to PDF by Puppeteer /PDF Action/
+      uses: fnicastri/html-to-pdf-action@v1.0.0
+      with:
+        html_file: "index.html"
+        output_pdf: "CV_Peter_GYORGY.pdf"
+
+    - name: Upload PDF to GitHub as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: CV-PDF-Version
+        path: CV_Peter_GYORGY.pdf
