@@ -54,6 +54,12 @@
   border-bottom: 1px solid var(--border);
 }
 
+.cv-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .cv-name {
   font-family: 'Fraunces', serif;
   font-size: 2.4rem;

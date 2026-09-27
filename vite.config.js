@@ -1,8 +1,10 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
+const isGithubPages = process.env.GITHUB_WORKFLOW && process.env.GITHUB_WORKFLOW.toLowerCase().includes('pages');
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/cv",
+  base: isGithubPages ? "/cv" : "/"
 })

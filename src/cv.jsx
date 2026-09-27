@@ -32,7 +32,25 @@ export default function CV() {
       <div className="cv-shell">
         <header className="cv-header">
           <div>
+            <div className="cv-name-row">
             <h1 className="cv-name">{cvData.name}</h1>
+            <ul className="theme-toggle-list">
+              <li
+                className="theme-toggle"
+                role="button"
+                tabIndex={0}
+                onClick={() => setDark((d) => !d)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setDark((d) => !d);
+                  }
+                }}
+                aria-pressed={dark}
+                aria-label="Toggle light and dark mode"
+              />
+            </ul>
+            </div>
             <p className="cv-role">{cvData.title}</p>
             <ul className="cv-contact-list">
               <li><a href={cvData.contact.phoneHref}>{cvData.contact.phone}</a></li>
@@ -40,22 +58,7 @@ export default function CV() {
               <li><a href={cvData.contact.linkedinUrl} target="_blank" rel="noreferrer">{cvData.contact.linkedin}</a></li>
             </ul>
           </div>
-          <ul className="theme-toggle-list">
-            <li
-              className="theme-toggle"
-              role="button"
-              tabIndex={0}
-              onClick={() => setDark((d) => !d)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  setDark((d) => !d);
-                }
-              }}
-              aria-pressed={dark}
-              aria-label="Toggle light and dark mode"
-            />
-          </ul>
+          
         </header>
 
         <div className="cv-grid">
