@@ -60,7 +60,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: HTML to PDF by Puppeteer /PDF Action/
-      uses: fnicastri/html-to-pdf-action@v1.0.0
+      uses: ferdinandkeller/html-to-pdf-action@v1
       with:
         html_file: "index.html"
         output_pdf: "CV_Peter_GYORGY.pdf"
