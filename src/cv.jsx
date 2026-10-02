@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { cvData } from "./cvData";
+import { cvData } from "./assets/cvData";
 import "./cv.css";
 
 const THEME_KEY = "pg-cv-theme";
