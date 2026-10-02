@@ -65,14 +65,14 @@
   font-size: 2.4rem;
   font-weight: 600;
   line-height: 1.1;
-  margin: 0 0 6px;
+  margin: 0 0 0 0;
 }
 
 .cv-role {
   font-size: 1rem;
   color: var(--accent);
   font-weight: 500;
-  margin: 0 0 14px;
+  margin: 4px 0 14px;
 }
 
 .cv-contact-list {
@@ -306,7 +306,11 @@
   font-size: 1.08rem;
   font-weight: 600;
   margin: 0;
+  transition: color 0.15s ease;
 }
+
+.cv-entry-head:hover .cv-entry-role,
+.cv-entry-head:focus-visible .cv-entry-role { color: var(--accent); }
 
 .cv-entry-company {
   display: flex;
@@ -437,8 +441,30 @@
   transition: color 0.15s ease;
 }
 
-.cv-footer-nav a:hover { color: var(--accent); }
+.cv-footer-nav a:hover,
+.cv-footer-top:hover { color: var(--accent); }
+
+.cv-footer-top {
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.cv-footer-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: back-to-top-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes back-to-top-blink {
+  50% { opacity: 0.45; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .cv-root, .theme-toggle { transition: none; }
+  .cv-footer-top.is-visible { animation: none; }
 }
