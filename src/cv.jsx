@@ -3,6 +3,20 @@ import { cvData } from "./cvData";
 import "./cv.css";
 
 const THEME_KEY = "pg-cv-theme";
+const BOLD_PHRASES = ["eliminating","on-site client visits"," user experience (UX)","ensuring smooth","immediate troubleshooting","dramatically faster","80%","100% clarity","zero ambiguity","direct positive feedback"];
+const BOLD_PHRASES_PATTERN = new RegExp(
+  `(${BOLD_PHRASES.slice()
+    .sort((first, second) => second.length - first.length)
+    .map((phrase) => phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("|")})`,
+  "g"
+);
+
+function renderWithBoldPhrases(text) {
+  return text.split(BOLD_PHRASES_PATTERN).map((part, partIndex) =>
+    BOLD_PHRASES.includes(part) ? <strong key={partIndex}>{part}</strong> : part
+  );
+}
 
 function getInitialTheme() {
   if (typeof window === "undefined") return false;
@@ -53,12 +67,11 @@ export default function CV() {
             </div>
             <p className="cv-role">{cvData.title}</p>
             <ul className="cv-contact-list">
-              <li><a href={cvData.contact.phoneHref}>{cvData.contact.phone}</a></li>
               <li><a href={`mailto:${cvData.contact.email}`}>{cvData.contact.email}</a></li>
               <li><a href={cvData.contact.linkedinUrl} target="_blank" rel="noreferrer">{cvData.contact.linkedin}</a></li>
+              <li><a href={cvData.contact.githubUrl} target="_blank" rel="noreferrer">{cvData.contact.github}</a></li>
             </ul>
-          </div>
-          
+          </div>                    
         </header>
 
         <div className="cv-grid">
@@ -116,17 +129,33 @@ export default function CV() {
                       >
                         <span className="cv-entry-head-main">
                           <h3 className="cv-entry-role">{job.role}</h3>
-                          <span className="cv-entry-period">{job.period}</span>
                         </span>
                         <span className="cv-entry-toggle-icon" aria-hidden="true">+</span>
                       </button>
-                      <div className="cv-entry-company">{job.company}</div>
+                      <div className="cv-entry-company">
+                        <span>{job.company}</span>
+                        <span className="cv-entry-period">{job.period}</span>
+                      </div>
                       <div className="cv-entry-collapse">
                         <div className="cv-entry-collapse-inner">
                           <ul className="cv-entry-bullets">
-                            {job.bullets.map((b, i) => (
-                              <li key={i}>{b}</li>
-                            ))}
+                            {job.bullets.map((bullet, i) => {
+                              const text = typeof bullet === "string" ? bullet : bullet.text;
+                              const subBullets = typeof bullet === "string" ? [] : bullet.subBullets;
+
+                              return (
+                                <li key={i}>
+                                  {renderWithBoldPhrases(text)}
+                                  {subBullets.length > 0 && (
+                                    <ul className="cv-entry-sub-bullets">
+                                      {subBullets.map((subBullet, subIndex) => (
+                                        <li key={subIndex}>{renderWithBoldPhrases(subBullet)}</li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </li>
+                              );
+                            })}
                           </ul>
                           <div className="cv-entry-tech">
                             Tech: <span>{job.tech}</span>
@@ -178,6 +207,14 @@ export default function CV() {
 
         <footer className="cv-footer">
           <span>© {new Date().getFullYear()} {cvData.name}</span>
+          <div className="cv-footer-tech">
+            <span>Built with</span>
+            <ul>
+              {["React", "JavaScript", "CSS", "Vite", "ESLint"].map((technology) => (
+                <li key={technology}>{technology}</li>
+              ))}
+            </ul>
+          </div>
           <ul className="cv-footer-nav">
             {cvData.nav.map((item) => (
               <li key={item.id}>

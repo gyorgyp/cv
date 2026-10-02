@@ -2,18 +2,18 @@
 // Edit this file to update the CV text without touching layout or styles.
 
 export const cvData = {
-  name: "GYöRGY Péter",
-  title: "Software Developer",
+  name: "Péter GYÖRGY",
+  title: "DevOps | Software Engineer",
   contact: {
-    phone: "+36-70-507-6193",
-    phoneHref: "tel:+36705076193",
     email: "gyorgyp@gmail.com",
     linkedin: "hu.linkedin.com/in/gyorgyp/",
     linkedinUrl: "https://hu.linkedin.com/in/gyorgyp/",
+    github: "github.com/gyorgyp/",
+    githubUrl: "https://github.com/gyorgyp/",
   },
 
   profile:
-    "15+ years in Operation focus DevOps and Software Development. Currently deepening Docker, Kubernetes, Ansible, Python, Git and Cloud. I enjoy hybrid work.",
+    "5+ yoe in Reliability & Operations-focused DevOps and 15+ yoe in Software Development. Caring about the details as much as the big picture - a stable system is built on both.",
 
   nav: [
     { id: "profile", label: "Profile" },
@@ -24,10 +24,10 @@ export const cvData = {
   ],
 
   coreSkills: [
-    "Tulip (MES)",
-    "Azure DevOps (Cloud/Server), CI/CD",
-    "Icinga, Ansible, PowerShell, Bash",
-    "Git, GitHub, GitHub Copilot, Claude, ChatGPT",
+    "Python",
+    "Tulip (MES / no-code / low-code)",
+    "Azure DevOps (Cloud & Server), CI/CD",
+    "Icinga, Ansible, PowerShell, Git, Bash",
     "C#, .NET / .NET Core, MSSQL",
     "ASP.NET (Web Forms, MVC), Blazor",
     "Scrum / Agile",
@@ -37,6 +37,7 @@ export const cvData = {
     "Docker, Kubernetes, Python",
     "Azure Cloud, AWS",
     "Linux (Ubuntu)",
+    "React",
   ],
 
   languages: [
@@ -45,7 +46,7 @@ export const cvData = {
   ],
 
   additionalStrengths:
-    "Analytical thinking, brainstorming, problem-solving, multitasking and structured task handling — built over a decade of cross-team, cross-country collaboration.",
+    "Analytical thinking, brainstorming, problem-solving, root cause analysis, multitasking and structured task handling, caring about the details as the big picture - built over a decade of cross-team, cross-country collaboration.",
 
   experience: [
     {
@@ -53,27 +54,38 @@ export const cvData = {
       company: "Prysprove Kft.",
       period: "2025 – 2026",
       bullets: [
-        "Built automated app version-update logic and refactored app logic for good working",
-        "Integrated standalone modules and contributed to web app design on Blazor / Microservices",
-        "Maintained direct contact with clients",
-        "Adopted Tulip's Functions feature to extend app logic",
-        "Queried and filtered data via aggregations for faster performance",
-        "Sped up legacy logic within existing apps by 80%",
-        "Established the team's naming convention standard for Tulip apps",
-        "Built a custom query for a specific client request, earning positive client feedback",
+        "Automated the Tulip apps built-in version-update mechanism and refactored core application logic, eliminating the need for routine on-site client visits for device updates",
+        "Integrated standalone modules into a unified system, significantly improving user experience (UX) and accelerating workflow efficiency",
+        "Maintained direct contact with clients on-site during critical deployment phases, ensuring smooth systems integration and immediate troubleshooting",
+        "Adopted Tulip's functions to write and standardize custom logic",
+        "Refactoring data queries for dramatically faster performance",
+        "Optimized legacy logic within existing applications, achieving an 80% improvement in execution speed",
+        "Established the team's naming convention standard for Tulip applications, ensuring 100% clarity and zero ambiguity across all variables",
+        "Built a dedicated client request, resulting in direct positive feedback",
+        "Contributed to cloud-ready web app by developing Blazor WebAssembly and REST APIs",
       ],
-      tech: "Tulip (MES/no-code/low code manufacturing platform), C#, Blazor, Microservices, REST API Development, GitHub, Lucid, Jira, Confluence",
+      tech: "Tulip (MES / no-code / low code), C#, Blazor, Microservices, REST API, GitHub, Lucid, Jira, Confluence",             
     },
     {
       role: "DevOps Engineer",
       company: "evosoft Hungary Kft.",
       period: "2017 – 2025",
       bullets: [
-        "Build Management Service Engineer (4y)",
-        "Automation (1y): HTML based tool - TFS (Rest API) synchronization",
-        "Chatbot development (1y) with a cross-country team using LUIS and Azure Bot Services",
-        "Migrated CI/CD pipelines from XAML to vNext (1y)",
-        "Visual Studio extension developer (1y): extended Siemens-specific tooling (C#, WPF, design patterns)",
+        { text: "Build Management Service Engineer (4y)",
+          subBullets: [ "Managed and configured on-premises Virtual Machines",
+                        "Monitored system infrastructure using Icinga",
+                        "Handled demand management processes",
+                        "Collaborated with users, customers and stakeholders to resolve technical issues",
+                        "Participated daily standups within cross-country teams (Germany, Portugal) and supported technical colleagues in India",
+                        "Migrated CI/CD pipelines from XAML to vNext",
+                        "Troubleshot and investigated root causes within Azure DevOps Server CI/CD pipelines"] },
+        { text: "Automation (1y): HTML based tool - TFS (Rest API) synchronization",
+          subBullets: [ "Collected IIS settings of all Application Tiers and automatically published daily as an Excel report",
+                        "Developed a new automated tool for project creation of Azure DevOps Server 2019 (in a small team)",
+                        "Automated the internal daily work hours booking tool synchronization with TFS"] },
+        { text: "Chatbot development (1y) with a cross-country team using LUIS and Azure Bot Services", subBullets: [] },
+        { text: "Migrated CI/CD pipelines from XAML to vNext (1y)", subBullets: [] },
+        { text: "Visual Studio extension developer (1y): extended Siemens-specific tooling (C#, WPF, design patterns)", subBullets: [] },
       ],
       tech: "Ansible, VMware, Icinga, PowerShell, Azure DevOps Server, LUIS, TypeScript, Azure Bot Services",
     },
