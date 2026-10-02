@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { cvData } from "./cvData";
 import "./cv.css";
 
@@ -31,6 +31,8 @@ function getInitialTheme() {
 
 export default function CV() {
   const [dark, setDark] = useState(getInitialTheme);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const footerRef = useRef(null);
   // Accordion: only one experience entry open at a time; first one open by default.
   const [openIndex, setOpenIndex] = useState(0);
 
@@ -41,8 +43,23 @@ export default function CV() {
     } catch (e) {}
   }, [dark]);
 
+  useEffect(() => {
+    const footer = footerRef.current;
+    if (!footer) return undefined;
+    if (!("IntersectionObserver" in window)) {
+      setShowBackToTop(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setShowBackToTop(entry.isIntersecting);
+    });
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={`cv-root ${dark ? "theme-dark" : "theme-light"}`}>
+    <div id="top" className={`cv-root ${dark ? "theme-dark" : "theme-light"}`}>
       <div className="cv-shell">
         <header className="cv-header">
           <div>
@@ -66,16 +83,22 @@ export default function CV() {
             </ul>
             </div>
             <p className="cv-role">{cvData.title}</p>
-            <ul className="cv-contact-list">
-              <li><a href={`mailto:${cvData.contact.email}`}>{cvData.contact.email}</a></li>
+            <ul className="cv-contact-list">              
               <li><a href={cvData.contact.linkedinUrl} target="_blank" rel="noreferrer">{cvData.contact.linkedin}</a></li>
               <li><a href={cvData.contact.githubUrl} target="_blank" rel="noreferrer">{cvData.contact.github}</a></li>
+              <li><a href={`mailto:${cvData.contact.email}`}>{cvData.contact.email}</a></li>
             </ul>
           </div>                    
         </header>
 
         <div className="cv-grid">
           <aside className="cv-sidebar">
+
+            <section id="profile">
+              <h2 className="cv-section-label">Profile</h2>
+              <p className="cv-profile-text">{cvData.profile}</p>            
+            </section>
+
             <section id="skills">
               <h2 className="cv-section-label">Core skills</h2>
               <ul className="cv-tag-list">
@@ -108,11 +131,6 @@ export default function CV() {
           </aside>
 
           <main className="cv-main">
-            <section id="profile">
-              <h2 className="cv-section-label">Profile</h2>
-              <p className="cv-profile-text">{cvData.profile}</p>
-              <p className="cv-additional">{cvData.additionalStrengths}</p>
-            </section>
 
             <section id="experience">
               <h2 className="cv-section-label">Experience</h2>
@@ -205,7 +223,7 @@ export default function CV() {
           </main>
         </div>
 
-        <footer className="cv-footer">
+        <footer className="cv-footer" ref={footerRef}>
           <span>© {new Date().getFullYear()} {cvData.name}</span>
           <div className="cv-footer-tech">
             <span>Built with</span>
@@ -222,6 +240,14 @@ export default function CV() {
               </li>
             ))}
           </ul>
+          <a
+            className={`cv-footer-top${showBackToTop ? " is-visible" : ""}`}
+            href="#top"
+            aria-hidden={!showBackToTop}
+            tabIndex={showBackToTop ? 0 : -1}
+          >
+            ↑ Back to top
+          </a>
         </footer>
       </div>
     </div>
