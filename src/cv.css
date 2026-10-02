@@ -76,7 +76,7 @@
 }
 
 .cv-contact-list {
-  display: flex;
+  display: grid;
   flex-wrap: wrap;
   gap: 14px;
   list-style: none;
