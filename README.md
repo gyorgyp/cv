@@ -1,25 +1,25 @@
-<<<<<<< Updated upstream
-# React + Vite
-=======
 # Péter GYÖRGY | CV 📄
->>>>>>> Stashed changes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive online curriculum vitae built as a static web application with React and Vite. This project presents professional experience, skills, education, and contact information in a clean, accessible, and print-friendly format.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This portfolio-style CV is designed to be:
 
-## React Compiler
+- Professional and easy to read
+- Fully responsive across devices
+- Fast to load and simple to maintain
+- Suitable for static hosting and easy deployment
+- Print-friendly for PDF export
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technology Stack
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- JavaScript
+- CSS
+- HTML
 
-<<<<<<< Updated upstream
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
 ## Features
 
 - Responsive single-page layout
@@ -154,4 +154,3 @@ This project is open source and available under the MIT License.
 ---
 
 Built with React + Vite for a fast, modern, and professional online CV experience.
->>>>>>> Stashed changes
