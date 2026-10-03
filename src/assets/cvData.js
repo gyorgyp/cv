@@ -14,7 +14,7 @@ export const cvData = {
   },
 
   profile:
-    "5+ years in Reliability & Operations-focused DevOps and 15+ years in Software Development. Caring about the details as much as the big picture - a stable system is built on both. Additional strengths: analytical thinking, brainstorming, problem-solving, root cause analysis, multitasking and structured task handling, caring about the details as the big picture - built over two decades of cross-team, cross-country collaboration.",
+    "5+ years in Reliability & Operations-focused DevOps and 15+ years in Software Development. Caring about the details as much as the big picture - a stable system is built on both. Additional strengths: analytical thinking, brainstorming, problem-solving, root cause analysis, multitasking and structured task handling - built over two decades of cross-team, cross-country collaboration.",
 
   nav: [
     { id: "profile", label: "Profile" },
