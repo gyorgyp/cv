@@ -82,13 +82,15 @@ export default function CV() {
               />
             </ul>
             </div>
-            <p className="cv-role">{cvData.title}</p>
+            <p className="cv-role">{cvData.title}</p>            
+          </div>
+          <div>
             <ul className="cv-contact-list">              
               <li><a href={cvData.contact.linkedinUrl} target="_blank" rel="noreferrer">{cvData.contact.linkedin}</a></li>
               <li><a href={cvData.contact.githubUrl} target="_blank" rel="noreferrer">{cvData.contact.github}</a></li>
-              <li><a href={`mailto:${cvData.contact.email}`}>{cvData.contact.email}</a></li>
+              <li><a href={`mailto:${cvData.contact.email}`}>{cvData.contact.emailDisplay}</a></li>
             </ul>
-          </div>                    
+          </div>           
         </header>
 
         <div className="cv-grid">
