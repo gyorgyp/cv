@@ -3,7 +3,7 @@ import { cvData } from "./assets/cvData";
 import "./cv.css";
 
 const THEME_KEY = "pg-cv-theme";
-const BOLD_PHRASES = ["eliminating","on-site client visits"," user experience (UX)","ensuring smooth","immediate troubleshooting","dramatically faster","80%","100% clarity","zero ambiguity","direct positive feedback"];
+const BOLD_PHRASES = ["eliminating","on-site client visits"," user experience (UX)","ensuring smooth","immediate troubleshooting","dramatically faster","80%","100% clarity","zero ambiguity","client really liked"];
 const BOLD_PHRASES_PATTERN = new RegExp(
   `(${BOLD_PHRASES.slice()
     .sort((first, second) => second.length - first.length)
@@ -106,6 +106,15 @@ export default function CV() {
               <ul className="cv-tag-list">
                 {cvData.coreSkills.map((skill) => (
                   <li key={skill}>{skill}</li>
+                ))}
+              </ul>
+            </section>
+
+             <section id="ai">
+              <h2 className="cv-section-label">AI</h2>
+              <ul className="cv-tag-list">
+                {cvData.ai.map((ai) => (
+                  <li key={ai}>{ai}</li>
                 ))}
               </ul>
             </section>

@@ -14,7 +14,7 @@ export const cvData = {
   },
 
   profile:
-    "5+ years in Reliability & Operations-focused DevOps and 15+ years in Software Development. Caring about the details as much as the big picture - a stable system is built on both. Additional strengths: analytical thinking, brainstorming, problem-solving, root cause analysis, multitasking and structured task handling, caring about the details as the big picture - built over two decades of cross-team, cross-country collaboration.",
+    "5+ years in Reliability & Operations-focused DevOps and 15+ years in Software Development. Caring about the details as much as the big picture - a stable system is built on both. Additional strengths: analytical mindset, endurance, brainstorming, root cause analysis, multitasking and structured task handling - built over two decades of cross-team, cross-country collaboration. I enjoy remote and hybrid work.",
 
   nav: [
     { id: "profile", label: "Profile" },
@@ -29,6 +29,11 @@ export const cvData = {
     "C#, .NET / .NET Core, MSSQL",
     "ASP.NET (Web Forms, MVC), Blazor",
     "Scrum / Agile",
+  ],
+
+  ai: [
+    "AI-Assisted Development",
+    "Claude",    
   ],
 
   currentlyLearning: [
@@ -46,7 +51,7 @@ export const cvData = {
   ],
 
   additionalStrengths:
-    "Additional strengths: analytical thinking, brainstorming, problem-solving, root cause analysis, multitasking and structured task handling, caring about the details as the big picture - built over a decade of cross-team, cross-country collaboration.",
+    "Analytical mindset, endurance, brainstorming, root cause analysis, multitasking and structured task handling - built over two decades of cross-team, cross-country collaboration.",
 
   experience: [
     {
@@ -57,11 +62,11 @@ export const cvData = {
         "Automated the Tulip apps built-in version-update mechanism and refactored core application logic, eliminating the need for routine on-site client visits for device updates",
         "Integrated standalone modules into a unified system, significantly improving user experience (UX) and accelerating workflow efficiency",
         "Maintained direct contact with clients on-site during critical deployment phases, ensuring smooth systems integration and immediate troubleshooting",
-        "Adopted Tulip's functions to write and standardize custom logic",
+        "Adopted Tulip's Functions to write and standardize custom logic",
         "Refactoring data queries for dramatically faster performance",
         "Optimized legacy logic within existing applications, achieving an 80% improvement in execution speed",
         "Established the team's naming convention standard for Tulip applications, ensuring 100% clarity and zero ambiguity across all variables",
-        "Built a dedicated client request, resulting in direct positive feedback",
+        "The client really liked the solution to one of my tasks and even thanked me for it.",
         "Contributed to cloud-ready web app by developing Blazor WebAssembly and REST APIs",
       ],
       tech: "Tulip (MES / no-code / low code), C#, Blazor, Microservices, REST API, GitHub, Lucid, Jira, Confluence",             
