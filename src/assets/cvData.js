@@ -23,12 +23,13 @@ export const cvData = {
   ],
 
   coreSkills: [
+    "GitHub, GitHub Actions",
     "Tulip (MES / no-code / low-code)",
-    "Azure DevOps (Cloud & Server), CI/CD",
-    "Icinga, Ansible, PowerShell, Git, Bash",
+    "Azure DevOps (Cloud & Server)",
+    "Icinga, Ansible, PowerShell, Bash",
     "C#, .NET / .NET Core, MSSQL",
-    "ASP.NET (Web Forms, MVC), Blazor",
-    "Scrum / Agile",
+    "Blazor WebAssembly, REST API, VS Code",
+    "Scrum / Agile",    
   ],
 
   ai: [
@@ -66,7 +67,7 @@ export const cvData = {
         "Refactoring data queries for dramatically faster performance",
         "Optimized legacy logic within existing applications, achieving an 80% improvement in execution speed",
         "Established the team's naming convention standard for Tulip applications, ensuring 100% clarity and zero ambiguity across all variables",
-        "The client really liked the solution to one of my tasks and even thanked me for it.",
+        "The client really liked the solution to one of my tasks.",
         "Contributed to cloud-ready web app by developing Blazor WebAssembly and REST APIs",
       ],
       tech: "Tulip (MES / no-code / low code), C#, Blazor, Microservices, REST API, GitHub, Lucid, Jira, Confluence",             
