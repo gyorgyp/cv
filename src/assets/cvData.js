@@ -25,7 +25,7 @@ export const cvData = {
   coreSkills: [
     "GitHub, GitHub Actions",
     "Tulip (MES / no-code / low-code)",
-    "Azure DevOps (Cloud & Server), CI/CD",
+    "Azure DevOps (Cloud & Server)",
     "Icinga, Ansible, PowerShell, Bash",
     "C#, .NET / .NET Core, MSSQL",
     "Blazor WebAssembly, REST API, VS Code",
