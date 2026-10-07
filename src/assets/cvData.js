@@ -111,7 +111,7 @@ export const cvData = {
       company: "Ecobit Kft.",
       period: "2001 – 2004",
       bullets: [
-        "Full-stack development on an ERP system: Windows Forms front end, MSSQL back end and stored procedures",
+        "Full-stack development on an ERP system: Windows Forms frontend, MSSQL backend and stored procedures",
       ],
       tech: "Windows Forms, MSSQL, Enterprise Architect",
     },
