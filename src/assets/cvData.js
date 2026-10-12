@@ -23,13 +23,13 @@ export const cvData = {
   ],
 
   coreSkills: [
-    "GitHub, GitHub Actions",
     "Tulip (MES / no-code / low-code)",
-    "Azure DevOps (Cloud & Server)",
-    "Icinga, Ansible, PowerShell, Bash",
-    "C#, .NET / .NET Core, MSSQL",
-    "Blazor WebAssembly, REST API, VS Code",
-    "Scrum / Agile",    
+    "CI/CD: Azure DevOps (Cloud & Server), GitHub Actions",
+    "Git, GitHub, Jira, Confluence",
+    "Monitoring & Automation: Icinga, Ansible, PowerShell, Bash",
+    "C# / .NET / .NET Core, MSSQL",
+    "Blazor WebAssembly, Rest API, Microservices, VS Code",
+    "Scrum / Agile, ITIL 4",
   ],
 
   ai: [
