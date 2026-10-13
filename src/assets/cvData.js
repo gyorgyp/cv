@@ -26,9 +26,9 @@ export const cvData = {
     "Tulip (MES / no-code / low-code)",
     "CI/CD: Azure DevOps (Cloud & Server), GitHub Actions",
     "Git, GitHub, Jira, Confluence",
-    "Monitoring & Automation: Icinga, Ansible, PowerShell, Bash",
+    "Icinga, Ansible, PowerShell, Bash",
     "C# / .NET / .NET Core, MSSQL",
-    "Blazor WebAssembly, Rest API, Microservices, VS Code",
+    "Blazor, Rest API, VS Code",
     "Scrum / Agile, ITIL 4",
   ],
 
