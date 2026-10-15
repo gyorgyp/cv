@@ -34,7 +34,7 @@ export default function CV() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const footerRef = useRef(null);
   // Accordion: only one experience entry open at a time; first one open by default.
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1);
 
   // Remember the visitor's explicit choice so a reload (F5) keeps the same theme.
   useEffect(() => {
