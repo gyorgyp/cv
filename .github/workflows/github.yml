@@ -63,16 +63,11 @@ jobs:
     - name: Download source
       uses: actions/checkout@v4
 
-    - name: Install wkhtmltopdf
-      run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
-
-    - name: Convert HTML to PDF
-      run: | 
-            wkhtmltopdf \
-            --javascript-delay 5000 \
-            --no-stop-slow-scripts \
-            --enable-javascript \
-            https://gyorgyp.github.io/cv CV_Peter_GYORGY.pdf
+    - name: Convert HTML to PDF using Puppeteer
+      uses: fandogh/html-to-pdf-action@v1.0.0
+      with:
+        url: https://gyorgyp.github.io/cv
+        output: CV_Peter_GYORGY.pdf
 
     - name: Upload PDF to GitHub as artifact
       uses: actions/upload-artifact@v4
