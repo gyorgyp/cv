@@ -65,6 +65,14 @@ jobs:
       
     - name: Convert HTML to PDF via Puppeteer Script and min. Node.js       
       run: |
+          npm install
+          npm run build
+          
+          # Start a local server
+          npx serve -s build -l 3000 &
+          
+          sleep 3
+      
           PUPPETEER_SKIP_DOWNLOAD=true
           npm install puppeteer
           
@@ -81,7 +89,7 @@ jobs:
             const page = await browser.newPage();
             
             console.log('Loading page...');
-            await page.goto('https://gyorgyp.github.io/cv', { waitUntil: 'networkidle2' });
+            await page.goto('http://localhost:3000', { waitUntil: 'networkidle2' });
             
             // Waiting 3 sec for safety reasons
             await new Promise(resolve => setTimeout(resolve, 3000));
