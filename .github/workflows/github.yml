@@ -67,7 +67,11 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
 
     - name: Convert HTML to PDF
-      run: wkhtmltopdf https://gyorgyp.github.io/cv/ CV_Peter_GYORGY.pdf
+      run: wkhtmltopdf \
+            --javascript-delay 5000 \
+            --no-stop-slow-scripts \
+            --enable-javascript \
+            https://gyorgyp.github.io/cv CV_Peter_GYORGY.pdf
 
     - name: Upload PDF to GitHub as artifact
       uses: actions/upload-artifact@v4
