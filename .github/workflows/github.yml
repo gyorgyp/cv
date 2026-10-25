@@ -65,6 +65,14 @@ jobs:
       
     - name: Convert HTML to PDF via Puppeteer Script and min. Node.js       
       run: |
+          npm install
+          npm run build
+          
+          # Start a local server
+          npx serve -s build -l 3000 &
+          
+          sleep 3
+      
           PUPPETEER_SKIP_DOWNLOAD=true
           npm install puppeteer
           
