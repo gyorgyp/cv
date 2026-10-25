@@ -62,13 +62,32 @@ jobs:
     steps:
     - name: Download source
       uses: actions/checkout@v4
-
-    - name: Convert HTML to PDF using Puppeteer
-      uses: fandogh/html-to-pdf-action@v1.0.0
-      with:
-        url: https://gyorgyp.github.io/cv
-        output: CV_Peter_GYORGY.pdf
-
+      
+    - name: Convert HTML to PDF via Puppeteer Script and min. Node.js 
+      run: |          
+          npm install puppeteer
+          
+          # Create a small javascript file for work
+          node -e "
+          const puppeteer = require('puppeteer');
+          (async () => {
+            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+            const page = await browser.newPage();
+            
+            console.log('Loading page...');
+            await page.goto('https://gyorgyp.github.io/cv', { waitUntil: 'networkidle2' });
+            
+            // Waiting 3 sec for safety reasons
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
+            console.log('PDF generating...');
+            await page.pdf({ path: 'CV_Peter_GYORGY.pdf', format: 'A4', printBackground: true });
+            
+            await browser.close();
+            console.log('Done!');
+          })();
+          "
+          
     - name: Upload PDF to GitHub as artifact
       uses: actions/upload-artifact@v4
       with:
