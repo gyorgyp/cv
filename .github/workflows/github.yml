@@ -69,7 +69,7 @@ jobs:
           npm run build
           
           # Start a local server
-          npx serve -s build -l 3000 &
+          npx serve -s dist -l 3000 &
           
           sleep 3
       
