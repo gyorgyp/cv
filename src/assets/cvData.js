@@ -3,7 +3,7 @@
 
 export const cvData = {
   name: "Péter GYÖRGY",
-  title: "DevOps | Software Engineer",
+  title: "DevOps Engineer",
   contact: {
     email: "gyorgyp@gmail.com",
     emailDisplay: "Mail gyorgyp@gmail.com",
@@ -14,7 +14,7 @@ export const cvData = {
   },
 
   profile:
-    "5+ years in Reliability & Operations-focused DevOps and 15+ years in Software Development. Caring about the details as much as the big picture - a stable system is built on both. Additional strengths: analytical mindset, endurance, brainstorming, root cause analysis, multitasking and structured task handling - built over two decades of cross-team, cross-country collaboration. I enjoy remote and hybrid work.",
+    "5+ years in Automation & Operations-focused DevOps and 15+ years in Software Development. Caring about the details as much as the big picture - a stable system is built on both. Additional strengths: analytical mindset, endurance, brainstorming, root cause analysis, multitasking and structured task handling - built over two decades of cross-team, cross-country collaboration. I enjoy remote and hybrid work.",
 
   nav: [
     { id: "profile", label: "Profile" },
@@ -24,12 +24,12 @@ export const cvData = {
 
   coreSkills: [
     "Tulip (MES / no-code / low-code)",
-    "CI/CD: Azure DevOps (Cloud & Server), GitHub Actions",
-    "Git, GitHub, Jira, Confluence",
+    "CI/CD: Azure DevOps Server, GitHub Actions",
+    "Git, GitHub",
     "Icinga, Ansible, PowerShell, Bash",
     "C# / .NET / .NET Core, MSSQL",
-    "Blazor, Rest API, VS Code",
-    "Scrum / Agile, ITIL 4",
+    "Blazor, REST API, VS Code",
+    "Scrum / Agile, Jira, Confluence",
   ],
 
   ai: [
@@ -39,6 +39,7 @@ export const cvData = {
 
   currentlyLearning: [
     "Python",
+    "AI",
     "Docker",
     "Kubernetes",    
     "Azure Cloud",
@@ -56,7 +57,7 @@ export const cvData = {
 
   experience: [
     {
-      role: "Software Developer",
+      role: "Software Engineer",
       company: "Prysprove Kft.",
       period: "2025 – 2026",
       bullets: [
@@ -70,7 +71,7 @@ export const cvData = {
         "The client really liked the solution to one of my tasks.",
         "Contributed to cloud-ready web app by developing Blazor WebAssembly and REST APIs",
       ],
-      tech: "Tulip (MES / no-code / low code), C#, Blazor, Microservices, REST API, GitHub, Lucid, Jira, Confluence",             
+      tech: "Tulip (MES / no-code / low-code), C#, Blazor, Microservices, REST API, GitHub, Lucid, Jira, Confluence",             
     },
     {
       role: "DevOps Engineer",
@@ -85,7 +86,7 @@ export const cvData = {
                         "Participated daily standups within cross-country teams (Germany, Portugal) and supported technical colleagues in India",
                         "Migrated CI/CD pipelines from XAML to vNext",
                         "Troubleshot and investigated root causes within Azure DevOps Server CI/CD pipelines"] },
-        { text: "Automation (1y): HTML based tool - TFS (Rest API) synchronization",
+        { text: "Automation (1y): HTML based tool - TFS (REST API) synchronization",
           subBullets: [ "Collected IIS settings of all Application Tiers and automatically published daily as an Excel report",
                         "Developed a new automated tool for project creation of Azure DevOps Server 2019 (in a small team)",
                         "Automated the internal daily work hours booking tool synchronization with TFS"] },
