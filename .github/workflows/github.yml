@@ -55,28 +55,27 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  html_to_pdf:
-    needs: deploy
+  html_to_pdf:    
     runs-on: ubuntu-latest
 
     steps:
     - name: Download source
       uses: actions/checkout@v4
       
-    - name: Convert HTML to PDF via Puppeteer Script and min. Node.js       
+    - name: Convert HTML to PDF via Puppeteer Script and min. Node.js    
       run: |
           npm install
           npm run build
           
-          # Start a local server
+          mkdir -p dist/cv
+          find dist -maxdepth 1 -not -name "cv" -not -name "dist" -exec mv {} dist/cv/ \; 2>/dev/null || true
+                    
           npx serve -s dist -l 3000 &
-          
           sleep 3
       
-          PUPPETEER_SKIP_DOWNLOAD=true
+          export PUPPETEER_SKIP_DOWNLOAD=true
           npm install puppeteer
           
-          # Create a small javascript file for work
           node -e "
           const puppeteer = require('puppeteer');
           (async () => {
