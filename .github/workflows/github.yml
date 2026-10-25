@@ -89,7 +89,7 @@ jobs:
             const page = await browser.newPage();
             
             console.log('Loading page...');
-            await page.goto('http://localhost:3000', { waitUntil: 'networkidle2' });
+            await page.goto('http://localhost:3000/cv', { waitUntil: 'networkidle2' });
             
             // Waiting 3 sec for safety reasons
             await new Promise(resolve => setTimeout(resolve, 3000));
