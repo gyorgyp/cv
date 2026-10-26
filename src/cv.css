@@ -467,3 +467,27 @@
   .cv-root, .theme-toggle { transition: none; }
   .cv-footer-top.is-visible { animation: none; }
 }
+
+@media print {
+  .accordion-collapse, 
+  .collapse, 
+  .cv-entry-collapse { 
+    display: block !important;
+    height: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+  
+  .experience-item,
+  .accordion-item,
+  div {
+    position: static !important;
+  }
+  
+  button, 
+  .plus-button,
+  .accordion-button::after {
+    display: none !important;
+  }
+}
