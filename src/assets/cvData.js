@@ -6,7 +6,7 @@ export const cvData = {
   title: "DevOps | Software Engineer",
   contact: {
     email: "gyorgyp@gmail.com",
-    emailDisplay: "Mail gyorgyp@gmail.com",
+    emailDisplay: "✉ gyorgyp@gmail.com",
     linkedin: "In hu.linkedin.com/in/gyorgyp/",
     linkedinUrl: "https://hu.linkedin.com/in/gyorgyp/",
     github: "GitHub github.com/gyorgyp/",

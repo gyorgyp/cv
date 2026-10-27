@@ -120,11 +120,11 @@
 }
 
 .theme-toggle::before {
-  content: "🌙";
+  content: "☾";
 }
 
 .cv-root.theme-dark .theme-toggle::before {
-  content: "☀️";
+  content: "☀";
 }
 
 .theme-toggle:hover { border-color: var(--accent); }
@@ -467,4 +467,47 @@
 @media (prefers-reduced-motion: reduce) {
   .cv-root, .theme-toggle { transition: none; }
   .cv-footer-top.is-visible { animation: none; }
+<<<<<<< Updated upstream
+=======
+}
+
+@media print {
+  .accordion-collapse, 
+  .collapse, 
+  .cv-entry-collapse { 
+    display: block !important;
+    height: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+  
+  .experience-item,
+  .accordion-item,
+  div {
+    position: static !important;
+  }
+  
+  button, 
+  .plus-button,
+  .accordion-button::after {
+    display: none !important;
+  }
+
+    /* Maga a CV konténer háttértelenítése */
+  .cv-root {
+      background: none !important;
+      background-color: transparent !important;
+  }
+
+  /* A CV konténeren BELÜLI összes elem hátterének kikapcsolása */
+  .cv-root * {
+      background: none !important;
+      background-color: transparent !important;
+      color: #000 !important; /* Ajánlott: fekete szöveg a fehér papíron */
+      
+      -webkit-print-color-adjust: economy !important;
+      print-color-adjust: economy !important;
+  }
+>>>>>>> Stashed changes
 }
