@@ -283,8 +283,8 @@
 
 .cv-entry-toggle-icon {
   flex-shrink: 0;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   border: 1px solid var(--border);
   display: flex;
@@ -467,8 +467,6 @@
 @media (prefers-reduced-motion: reduce) {
   .cv-root, .theme-toggle { transition: none; }
   .cv-footer-top.is-visible { animation: none; }
-<<<<<<< Updated upstream
-=======
 }
 
 @media print {
@@ -494,13 +492,11 @@
     display: none !important;
   }
 
-    /* Maga a CV konténer háttértelenítése */
   .cv-root {
       background: none !important;
       background-color: transparent !important;
   }
 
-  /* A CV konténeren BELÜLI összes elem hátterének kikapcsolása */
   .cv-root * {
       background: none !important;
       background-color: transparent !important;
@@ -509,5 +505,4 @@
       -webkit-print-color-adjust: economy !important;
       print-color-adjust: economy !important;
   }
->>>>>>> Stashed changes
 }
