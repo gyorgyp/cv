@@ -119,11 +119,11 @@
 }
 
 .theme-toggle::before {
-  content: "🌙";
+  content: "☾";
 }
 
 .cv-root.theme-dark .theme-toggle::before {
-  content: "☀️";
+  content: "☀";
 }
 
 .theme-toggle:hover { border-color: var(--accent); }
@@ -489,5 +489,20 @@
   .plus-button,
   .accordion-button::after {
     display: none !important;
+  }
+
+  .cv-root {
+      background: none !important;
+      background-color: transparent !important;
+  }
+
+  /* Turn off background colors for printing */
+  .cv-root * {
+      background: none !important;
+      background-color: transparent !important;
+      color: #000 !important; /* Ajánlott: fekete szöveg a fehér papíron */
+      
+      -webkit-print-color-adjust: economy !important;
+      print-color-adjust: economy !important;
   }
 }
