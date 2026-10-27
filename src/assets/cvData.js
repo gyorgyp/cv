@@ -6,10 +6,10 @@ export const cvData = {
   title: "DevOps Engineer",
   contact: {
     email: "gyorgyp@gmail.com",
-    emailDisplay: "✉ gyorgyp@gmail.com",
-    linkedin: "In hu.linkedin.com/in/gyorgyp/",
+    emailDisplay: "gyorgyp@gmail.com",
+    linkedin: "hu.linkedin.com/in/gyorgyp/",
     linkedinUrl: "https://hu.linkedin.com/in/gyorgyp/",
-    github: "GitHub github.com/gyorgyp/",
+    github: "github.com/gyorgyp/",
     githubUrl: "https://github.com/gyorgyp/",
   },
 

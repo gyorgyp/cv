@@ -87,8 +87,23 @@
  
 }
 
-.cv-contact-list a { text-decoration: none; }
+.cv-contact-list a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
 .cv-contact-list a:hover { color: var(--accent); }
+
+.cv-contact-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--text);
+}
+
+.cv-contact-icon-linkedin { fill: currentColor; }
+.cv-contact-icon-github { fill: currentColor; }
 
 .theme-toggle-list {
   list-style: none;

@@ -85,10 +85,33 @@ export default function CV() {
             <p className="cv-role">{cvData.title}</p>            
           </div>
           <div>
-            <ul className="cv-contact-list">              
-              <li><a href={cvData.contact.linkedinUrl} target="_blank" rel="noreferrer">{cvData.contact.linkedin}</a></li>
-              <li><a href={cvData.contact.githubUrl} target="_blank" rel="noreferrer">{cvData.contact.github}</a></li>
-              <li><a href={`mailto:${cvData.contact.email}`}>{cvData.contact.emailDisplay}</a></li>
+            <ul className="cv-contact-list">
+              <li>
+                <a href={cvData.contact.linkedinUrl} target="_blank" rel="noreferrer">
+                  <svg className="cv-contact-icon cv-contact-icon-linkedin" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.78C.8 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.78 24h20.44c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" />
+                  </svg>
+                  {cvData.contact.linkedin}
+                </a>
+              </li>
+              <li>
+                <a href={cvData.contact.githubUrl} target="_blank" rel="noreferrer">
+                  <svg className="cv-contact-icon cv-contact-icon-github" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.1c-3.1.67-3.76-1.32-3.76-1.32-.51-1.3-1.24-1.65-1.24-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .1.75 2.34 3.13 1.65.1-.72.4-1.2.7-1.48-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.42.11-2.96 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.13-1.45 3.07-1.15 3.07-1.15.62 1.54.23 2.68.12 2.96.72.78 1.15 1.78 1.15 3 0 4.27-2.6 5.21-5.08 5.49.4.35.76 1.02.76 2.05v3.04c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z" />
+                  </svg>
+                  {cvData.contact.github}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${cvData.contact.email}`}>
+                  <svg className="cv-contact-icon cv-contact-icon-gmail" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M3.5 6.5 12 13l8.5-6.5M4 6v12m16-12v12" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
+                    <path d="M4 18V7.2m16-.1V18" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5" />
+                    <path d="M4 18h3m10 0h3" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5" />
+                  </svg>
+                  {cvData.contact.emailDisplay}
+                </a>
+              </li>
             </ul>
           </div>           
         </header>
