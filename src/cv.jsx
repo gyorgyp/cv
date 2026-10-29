@@ -262,7 +262,7 @@ export default function CV() {
           <div className="cv-footer-tech">
             <span>Built with</span>
             <ul>
-              {["React", "Vite", "ESLint"].map((technology) => (
+              {["React"].map((technology) => (
                 <li key={technology}>{technology}</li>
               ))}
             </ul>
