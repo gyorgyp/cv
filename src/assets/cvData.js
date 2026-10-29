@@ -96,7 +96,7 @@ export const cvData = {
       tech: "Ansible, VMware, Icinga, PowerShell, Azure DevOps Server, LUIS, TypeScript, Azure Bot Services",
     },
     {
-      role: "Full-Stack / Senior .NET Developer",
+      role: "Full-Stack / .NET Developer",
       company: "SDA Stúdió Kft.",
       period: "2004 – 2017",
       bullets: [

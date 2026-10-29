@@ -90,6 +90,16 @@
 .cv-contact-list a { text-decoration: none; }
 .cv-contact-list a:hover { color: var(--accent); }
 
+.cv-contact-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--text);
+}
+
+.cv-contact-icon-linkedin { fill: currentColor; }
+.cv-contact-icon-github { fill: currentColor; }
+
 .theme-toggle-list {
   list-style: none;
   margin: 0;
@@ -306,11 +316,14 @@
   font-size: 1.08rem;
   font-weight: 600;
   margin: 0;
-  transition: color 0.15s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
 .cv-entry-head:hover .cv-entry-role,
-.cv-entry-head:focus-visible .cv-entry-role { color: var(--accent); }
+.cv-entry-head:focus-visible .cv-entry-role { 
+  color: var(--accent);
+  transform: translate(-2px, 0px)
+}
 
 .cv-entry-company {
   display: flex;
