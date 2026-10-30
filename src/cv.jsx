@@ -46,7 +46,7 @@ export default function CV() {
     }
 
     const startY = window.scrollY;
-    const distance = targetY - startY;
+    const distance = targetY - startY - 15;
     let startTime = null;
 
     function animateScroll(timestamp) {
