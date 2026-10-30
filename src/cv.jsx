@@ -33,6 +33,9 @@ export default function CV() {
   const [dark, setDark] = useState(getInitialTheme);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const footerRef = useRef(null);
+  const entryRefs = useRef([]);
+  const closingIndexRef = useRef(null);
+  const pendingScrollIndexRef = useRef(null);
   // Accordion: only one experience entry open at a time; first one open by default.
   const [openIndex, setOpenIndex] = useState(-1);
 
@@ -172,11 +175,21 @@ export default function CV() {
                 {cvData.experience.map((job, index) => {
                   const isOpen = index === openIndex;
                   return (
-                    <div className={`cv-entry${isOpen ? " open" : ""}`} key={job.company + job.period}>
+                    <div
+                      className={`cv-entry${isOpen ? " open" : ""}`}
+                      key={job.company + job.period}
+                      ref={(element) => {
+                        entryRefs.current[index] = element;
+                      }}
+                    >
                       <button
                         type="button"
                         className="cv-entry-head"
-                        onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                        onClick={() => {
+                          closingIndexRef.current = openIndex === -1 ? null : openIndex;
+                          pendingScrollIndexRef.current = isOpen || openIndex === -1 ? null : index;
+                          setOpenIndex(isOpen ? -1 : index);
+                        }}
                         aria-expanded={isOpen}
                       >
                         <span className="cv-entry-head-main">
@@ -188,7 +201,27 @@ export default function CV() {
                         <span>{job.company}</span>
                         <span className="cv-entry-period">{job.period}</span>
                       </div>
-                      <div className="cv-entry-collapse">
+                      <div
+                        className="cv-entry-collapse"
+                        onTransitionEnd={(event) => {
+                          if (
+                            event.target !== event.currentTarget ||
+                            event.propertyName !== "grid-template-rows" ||
+                            index !== closingIndexRef.current ||
+                            pendingScrollIndexRef.current === null
+                          ) {
+                            return;
+                          }
+
+                          const targetEntry = entryRefs.current[pendingScrollIndexRef.current];
+                          closingIndexRef.current = null;
+                          pendingScrollIndexRef.current = null;
+
+                          if (!targetEntry) return;
+                          const top = targetEntry.getBoundingClientRect().top;
+                          if (top < 0) window.scrollBy({ top, behavior: "smooth" });
+                        }}
+                      >
                         <div className="cv-entry-collapse-inner">
                           <ul className="cv-entry-bullets">
                             {job.bullets.map((bullet, i) => {
