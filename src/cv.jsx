@@ -36,8 +36,38 @@ export default function CV() {
   const entryRefs = useRef([]);
   const closingIndexRef = useRef(null);
   const pendingScrollIndexRef = useRef(null);
+  const scrollAnimationFrameRef = useRef(null);
   // Accordion: only one experience entry open at a time; first one open by default.
   const [openIndex, setOpenIndex] = useState(-1);
+
+  function scrollToY(targetY) {
+    if (scrollAnimationFrameRef.current !== null) {
+      window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+    }
+
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function animateScroll(timestamp) {
+      if (startTime === null) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / 300, 1);
+      const easedProgress =
+        progress < 0.5
+          ? 4 * progress ** 3
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      window.scrollTo(0, startY + distance * easedProgress);
+
+      if (progress < 1) {
+        scrollAnimationFrameRef.current = window.requestAnimationFrame(animateScroll);
+      } else {
+        scrollAnimationFrameRef.current = null;
+      }
+    }
+
+    scrollAnimationFrameRef.current = window.requestAnimationFrame(animateScroll);
+  }
 
   // Remember the visitor's explicit choice so a reload (F5) keeps the same theme.
   useEffect(() => {
@@ -219,7 +249,7 @@ export default function CV() {
 
                           if (!targetEntry) return;
                           const top = targetEntry.getBoundingClientRect().top;
-                          if (top < 0) window.scrollBy({ top, behavior: "smooth" });
+                          if (top < 0) scrollToY(window.scrollY + top);
                         }}
                       >
                         <div className="cv-entry-collapse-inner">
