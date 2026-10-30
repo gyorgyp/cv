@@ -28,13 +28,13 @@ export const cvData = {
     "Git, GitHub",
     "Icinga, Ansible, PowerShell, Bash",
     "C# / .NET / .NET Core, MSSQL",
-    "Blazor, REST API, VS Code",
+    "REST API, VS Code",
     "Scrum / Agile, Jira, Confluence",
   ],
 
   ai: [
     "AI-Assisted Development",
-    "Claude",    
+    "Claude",
   ],
 
   currentlyLearning: [
@@ -42,7 +42,7 @@ export const cvData = {
     "Power BI",
     "Python",
     "Docker",
-    "Kubernetes",    
+    "Kubernetes",
     "Azure Cloud",
     "AWS",
     "Linux (Ubuntu)",
@@ -64,8 +64,8 @@ export const cvData = {
         "Refactored data queries for dramatically faster performance",
         "Optimized legacy logic within existing applications, achieving an 80% improvement in execution speed",
         "Established the team's naming convention standard for Tulip applications, ensuring consistent, unambiguous naming across all variables",
-	"Delivered a custom solution for a specific client request, resulting in direct positive feedback",
-	"Contributed to a cloud-ready, Blazor-based web app by developing REST API endpoints (C#) in a microservices architecture",
+        "Delivered a custom solution for a specific client request, resulting in direct positive feedback",
+	      "Contributed to a cloud-ready, Blazor-based web app by developing REST API endpoints (C#) in a microservices architecture",
       ],
       tech: "Tulip (MES / no-code / low-code), C#, Blazor, Microservices, REST API, GitHub, Lucid, Jira, Confluence",             
     },
