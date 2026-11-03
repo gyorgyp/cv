@@ -79,7 +79,7 @@ export const cvData = {
       company: "evosoft Hungary Kft.",
       period: "2017 – 2025",
       bullets: [
-        { text: "Build Management Service Engineer (4y)",
+        { text: "Build Management Service Engineer (5y)",
           subBullets: [ "Managed and configured on-premises Virtual Machines",
                         "Monitored system infrastructure using Icinga",
                         "Handled demand management processes",
@@ -91,8 +91,7 @@ export const cvData = {
           subBullets: [ "Collected IIS settings of all Application Tiers and automatically published daily as an Excel report",
                         "Developed a new automated tool for project creation of Azure DevOps Server 2019 (in a small team)",
                         "Automated the internal daily work hours booking tool synchronization with TFS"] },
-        { text: "Chatbot development (1y) with a cross-country team using LUIS and Azure Bot Services", subBullets: [] },
-        { text: "Migrated CI/CD pipelines from XAML to vNext (1y)", subBullets: [] },
+        { text: "Chatbot development (1y) with a cross-country team using LUIS and Azure Bot Services", subBullets: [] },        
         { text: "Visual Studio extension developer (1y): extended Siemens-specific tooling (C#, WPF, design patterns)", subBullets: [] },
       ],
       tech: "Ansible, VMware, Icinga, PowerShell, Azure DevOps Server, LUIS, TypeScript, Azure Bot Services",
