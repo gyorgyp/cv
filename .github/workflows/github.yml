@@ -39,10 +39,50 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Generate PDF
+        run: |
+          npm install --no-save --package-lock=false puppeteer
+
+          npm run preview -- --host 127.0.0.1 --port 3000 &
+          for attempt in {1..30}; do
+            if curl --silent --fail http://127.0.0.1:3000/cv/ > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl --silent --show-error --fail http://127.0.0.1:3000/cv/ > /dev/null
+
+          node --input-type=module <<'NODE'
+          import puppeteer from 'puppeteer';
+
+          const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          });
+
+          try {
+            const page = await browser.newPage();
+            await page.goto('http://127.0.0.1:3000/cv/', { waitUntil: 'networkidle2' });
+            await page.pdf({
+              path: 'dist/CV_Peter_GYORGY.pdf',
+              format: 'A4',
+              printBackground: true,
+            });
+          } finally {
+            await browser.close();
+          }
+          NODE
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist   # Vite - default output directory
+          path: ./dist
+
+      - name: Upload PDF as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CV-PDF-Version
+          path: dist/CV_Peter_GYORGY.pdf
 
   deploy:
     needs: build
@@ -54,52 +94,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-
-  html_to_pdf:    
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Download source
-      uses: actions/checkout@v4
-      
-    - name: Convert HTML to PDF via Puppeteer Script and min. Node.js    
-      run: |
-          npm install
-          npm run build
-          
-          npm run preview -- --port 3000 &
-          sleep 3
-      
-          export PUPPETEER_SKIP_DOWNLOAD=true
-          npm install puppeteer
-          
-          node -e "
-          const puppeteer = require('puppeteer');
-          (async () => {
-            const browser = await puppeteer.launch({ 
-              headless: true, 
-              executablePath: '/usr/bin/google-chrome',
-              args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-            });
-            
-            const page = await browser.newPage();
-            
-            console.log('Loading page...');
-            await page.goto('http://localhost:3000/cv', { waitUntil: 'networkidle2' });
-            
-            // Waiting 3 sec for safety reasons
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            
-            console.log('PDF generating...');
-            await page.pdf({ path: 'CV_Peter_GYORGY.pdf', format: 'A4', printBackground: true });
-            
-            await browser.close();
-            console.log('Done!');
-          })();
-          "
-          
-    - name: Upload PDF to GitHub as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: CV-PDF-Version
-        path: CV_Peter_GYORGY.pdf

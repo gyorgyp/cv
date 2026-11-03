@@ -13,6 +13,11 @@ export const cvData = {
     githubUrl: "https://github.com/gyorgyp/",
   },
 
+  download: {
+    label: "Download as PDF",
+    file: "CV_Peter_GYORGY.pdf",
+  },
+
   profile:
 	"15+ years in software development, plus 5+ years in automation and operations-focused DevOps. Analytical troubleshooting and root cause analysis, caring about the details as much as the big picture: a stable system is built on both.",
 
