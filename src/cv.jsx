@@ -145,6 +145,14 @@ export default function CV() {
                   {cvData.contact.emailDisplay}
                 </a>
               </li>
+              <li>
+                <a className="cv-download" href={`${import.meta.env?.BASE_URL ?? "/"}${cvData.download.file}`} download>
+                  <svg className="cv-contact-icon cv-contact-icon-download" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3" />
+                  </svg>
+                  {cvData.download.label}
+                </a>
+              </li>
             </ul>
           </div>           
         </header>

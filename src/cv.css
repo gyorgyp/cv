@@ -95,6 +95,10 @@
 }
 .cv-contact-list a:hover { color: var(--accent); }
 
+.cv-contact-list a.cv-download {
+  font-weight: 500;
+}
+
 .cv-contact-icon {
   width: 16px;
   height: 16px;
@@ -104,6 +108,13 @@
 
 .cv-contact-icon-linkedin { fill: currentColor; }
 .cv-contact-icon-github { fill: currentColor; }
+.cv-contact-icon-download {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
 
 .theme-toggle-list {
   list-style: none;
