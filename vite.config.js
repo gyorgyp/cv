@@ -6,5 +6,5 @@ const isGithubPages = process.env.GITHUB_WORKFLOW && process.env.GITHUB_WORKFLOW
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: isGithubPages ? "/cv" : "/"
+  base: isGithubPages ? "/cv/" : "/"
 })
