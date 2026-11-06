@@ -123,6 +123,27 @@ npm run build
 
 The generated files will be available in the `dist/` folder.
 
+### Docker
+
+Build and start the production container with Docker Compose:
+
+```bash
+docker compose up --build -d
+```
+
+Open [http://localhost:8080](http://localhost:8080). To stop the container:
+
+```bash
+docker compose down
+```
+
+To build and run the image without Compose:
+
+```bash
+docker build -t cv .
+docker run --rm -p 8080:80 cv
+```
+
 ## Customization
 
 To adapt the CV for your own profile:
