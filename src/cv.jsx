@@ -3,7 +3,7 @@ import { cvData } from "./assets/cvData";
 import "./cv.css";
 
 const THEME_KEY = "pg-cv-theme";
-const BOLD_PHRASES = ["eliminating","on-site client visits"," user experience (UX)","ensuring smooth","immediate troubleshooting","dramatically faster","80%","100% clarity","zero ambiguity","client really liked"];
+const BOLD_PHRASES = ["Eliminated routine on-site client visits","improving user experience (UX)","80% improvement","naming convention","positive feedback","REST API","microservices"];
 const BOLD_PHRASES_PATTERN = new RegExp(
   `(${BOLD_PHRASES.slice()
     .sort((first, second) => second.length - first.length)
@@ -233,7 +233,11 @@ export default function CV() {
                         <span className="cv-entry-head-main">
                           <h3 className="cv-entry-role">{job.role}</h3>
                         </span>
-                        <span className="cv-entry-toggle-icon" aria-hidden="true">+</span>
+                        <span className="cv-entry-toggle-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M12 5v14M5 12h14" />
+                          </svg>
+                        </span>
                       </button>
                       <div className="cv-entry-company">
                         <span>{job.company}</span>
@@ -351,7 +355,10 @@ export default function CV() {
             aria-hidden={!showBackToTop}
             tabIndex={showBackToTop ? 0 : -1}
           >
-            ↑ Back to top
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 19V5m-7 7 7-7 7 7" />
+            </svg>
+            <span>{cvData.footer.backToTop}</span>
           </a>
         </footer>
       </div>

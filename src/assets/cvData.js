@@ -18,6 +18,10 @@ export const cvData = {
     file: "CV_Peter_GYORGY.pdf",
   },
 
+  footer: {
+    backToTop: "Back to top",
+  },
+
   profile:
 	"15+ years in software development, plus 5+ years in automation and operations-focused DevOps. Analytical troubleshooting and root cause analysis, caring about the details as much as the big picture: a stable system is built on both.",
 
@@ -63,14 +67,14 @@ export const cvData = {
       role: "Software Engineer",
       company: "Prysprove Kft.",
       period: "2025 – 2026",
-      bullets: [
-        "Extended the built-in version-update mechanism for Tulip applications and refactored core application logic, eliminating the need for routine on-site client visits for device updates",
+      bullets: [        
+        "Eliminated routine on-site client visits for device updates by extending Tulip's built-in version-update and refactoring core application logic",
         "Integrated standalone modules into a unified system, significantly improving user experience (UX) and accelerating workflow efficiency",
-        "Refactored data queries for dramatically faster performance",
-        "Optimized legacy logic within existing applications, achieving an 80% improvement in execution speed",
-        "Established the team's naming convention standard for Tulip applications, ensuring consistent, unambiguous naming across all variables",
+        "Achieved an 80% improvement in execution speed by optimizing legacy application logic and data queries",
+        "Defined and introduced the team's naming convention standard for Tulip applications",
         "Delivered a custom solution for a specific client request, resulting in direct positive feedback",
-	      "Contributed to a cloud-ready, Blazor-based web app by developing REST API endpoints (C#) in a microservices architecture",
+        "Worked directly with clients, translating their requirements into working solutions",
+        "Contributed to a cloud-ready, Blazor-based web app by developing REST API endpoints (C#) in a microservices architecture",
       ],
       tech: "Tulip (MES / no-code / low-code), C#, Blazor, Microservices, REST API, GitHub, Lucid, Jira, Confluence",             
     },
@@ -88,7 +92,7 @@ export const cvData = {
                         "Migrated CI/CD pipelines from XAML to vNext",
                         "Troubleshot and investigated root causes within Azure DevOps Server CI/CD pipelines"] },
         { text: "Automation (1y): HTML based tool - TFS (REST API) synchronization",
-          subBullets: [ "Collected IIS settings of all Application Tiers and automatically published daily as an Excel report",
+          subBullets: [ "Built a scheduled Azure DevOps pipeline using PowerShell that collects IIS configuration from all application tiers daily and publishes an Excel report, giving stakeholders daily visibility into server configuration",
                         "Developed a new automated tool for project creation of Azure DevOps Server 2019 (in a small team)",
                         "Automated the internal daily work hours booking tool synchronization with TFS"] },
         { text: "Chatbot development (1y) with a cross-country team using LUIS and Azure Bot Services", subBullets: [] },        
