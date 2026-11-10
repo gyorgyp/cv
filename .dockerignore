@@ -7,3 +7,9 @@ dist-ssr
 *.local
 npm-debug.log*
 yarn-debug.log*
+.env
+.env.*
+coverage
+*.md
+Dockerfile
+.dockerignore
