@@ -3,7 +3,7 @@ import { cvData } from "./assets/cvData";
 import "./cv.css";
 
 const THEME_KEY = "pg-cv-theme";
-const BOLD_PHRASES = ["Eliminated routine on-site client visits","improving user experience (UX)","80% improvement","naming convention","positive feedback","REST API","microservices"];
+const BOLD_PHRASES = ["Azure Bot Services","Chatbot development","Automated","Developed","Built","pipeline using PowerShell","Eliminated routine on-site client visits","improving user experience (UX)","80% improvement","naming convention","positive feedback","REST API","microservices","Virtual Machines","Icinga","Collaborated with","daily standups within cross-country teams","Migrated","pipelines","root causes",];
 const BOLD_PHRASES_PATTERN = new RegExp(
   `(${BOLD_PHRASES.slice()
     .sort((first, second) => second.length - first.length)
