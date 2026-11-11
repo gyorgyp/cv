@@ -290,6 +290,7 @@
   color: inherit;
   text-align: left;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cv-entry-head:focus-visible {
@@ -359,14 +360,18 @@
   transition: width 0.25s ease;
 }
 
-.cv-entry-head-main:hover .cv-entry-role,
-.cv-entry-head-main:focus-visible .cv-entry-role {
+.cv-entry-head:focus-visible .cv-entry-role {
   color: var(--accent);
 }
 
-.cv-entry-head-main:hover .cv-entry-role::after,
-.cv-entry-head-main:focus-visible .cv-entry-role::after {
-  width: 100%;
+@media (hover: hover) and (pointer: fine) {
+  .cv-entry-head:hover .cv-entry-role {
+    color: var(--accent);
+  }
+
+  .cv-entry-head:hover .cv-entry-role::after {
+    width: 100%;
+  }
 }
 
 .cv-entry-company {
