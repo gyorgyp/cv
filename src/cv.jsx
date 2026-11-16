@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { cvData } from "./assets/cvData";
+import packageJson from "../package.json";
 import "./cv.css";
 
 const THEME_KEY = "pg-cv-theme";
@@ -341,6 +342,7 @@ export default function CV() {
                 <li key={technology}>{technology}</li>
               ))}
             </ul>
+            <span> | v{packageJson.version}</span>
           </div>
           <ul className="cv-footer-nav">
             {cvData.nav.map((item) => (

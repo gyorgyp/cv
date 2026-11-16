@@ -36,6 +36,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set actual version number
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          EVENT_LABEL=""
+                    
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            EVENT_LABEL=": Scheduled"
+          fi
+          
+          FULL_VERSION="v${PKG_VERSION} - #${{ github.run_number }}${EVENT_LABEL}"
+          echo "VITE_APP_VERSION=$FULL_VERSION" >> $GITHUB_ENV
+
       - name: Build
         run: npm run build
 
