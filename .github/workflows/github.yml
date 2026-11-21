@@ -24,6 +24,9 @@ jobs:
       # Must be set for both "npm run build" and "npm run preview" (PDF step),
       # otherwise preview serves from / and the /cv/ assets 404, giving a blank PDF.
       VITE_BASE: /cv/
+      # GitHub Pages has no API of its own: load the live CV from the Azure Static Web App.
+      # Needs the CORS header in api/src/functions/getCv.js; falls back to src/assets/cvData.js if unreachable.
+      VITE_CV_API_URL: https://zealous-bay-03ae5da0f.4.azurestaticapps.net/api/cv
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,12 +76,21 @@ jobs:
 
           const browser = await puppeteer.launch({
             headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            // --disable-web-security: the page is served from 127.0.0.1 here, which is not a CORS-allowed origin
+            // of the API; this lets this local, CI-only render load the live data. It does not affect the real site.
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security'],
           });
 
           try {
             const page = await browser.newPage();
+            // Wait for the live CV from the API so the PDF matches the site.
+            // If the API is down, continue: the page still renders the bundled fallback data.
+            const apiResponse = page
+              .waitForResponse((r) => r.url() === process.env.VITE_CV_API_URL, { timeout: 15000 })
+              .then((r) => console.log(`CV API: HTTP ${r.status()}`))
+              .catch(() => console.log('CV API did not respond, PDF uses the bundled data'));
             await page.goto('http://127.0.0.1:3000/cv/', { waitUntil: 'networkidle2' });
+            await apiResponse;
             // Fail the build instead of publishing a blank PDF if the app did not render.
             await page.waitForSelector('.cv-entry', { timeout: 15000 });
             await page.pdf({
