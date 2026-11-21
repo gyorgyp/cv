@@ -13,3 +13,5 @@ coverage
 *.md
 Dockerfile
 .dockerignore
+api
+**/local.settings.json

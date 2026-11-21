@@ -1,0 +1,16 @@
+{
+  "name": "cv-api",
+  "version": "1.0.0",
+  "description": "CV Cosmos DB API",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.10.2",
+    "@azure/functions": "^4.17.1"
+  }
+}
