@@ -1,7 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { cvData } from "./assets/cvData";
-import packageJson from "../package.json";
+import { useState, useEffect, useRef } from "react";
+import { cvData as initialCvData } from "./assets/cvData"; // Fallback data
 import "./cv.css";
+
+// API URL that works in production and in local development (Vite proxies /api to the Functions host)
+const CV_API_URL = import.meta.env.VITE_CV_API_URL || "/api/cv";
+
+// CI sets VITE_APP_VERSION (e.g. "v2.0.0 - #12"); otherwise use the package.json version injected by vite.config.js.
+const APP_VERSION = import.meta.env.VITE_APP_VERSION || `v${__APP_VERSION__}`;
 
 const THEME_KEY = "pg-cv-theme";
 const BOLD_PHRASES = ["Azure Bot Services","Chatbot development","Automated","Developed","Built","pipeline using PowerShell","Eliminated routine on-site client visits","improving user experience (UX)","80% improvement","naming convention","positive feedback","REST API","microservices","Virtual Machines","Icinga","Collaborated with","daily standups within cross-country teams","Migrated","pipelines","root causes",];
@@ -14,9 +19,31 @@ const BOLD_PHRASES_PATTERN = new RegExp(
 );
 
 function renderWithBoldPhrases(text) {
-  return text.split(BOLD_PHRASES_PATTERN).map((part, partIndex) =>
+  return String(text ?? "").split(BOLD_PHRASES_PATTERN).map((part, partIndex) =>
     BOLD_PHRASES.includes(part) ? <strong key={partIndex}>{part}</strong> : part
   );
+}
+
+const asArray = (value, fallback) => (Array.isArray(value) ? value : fallback);
+
+// Merge API data over the bundled fallback so a partial or malformed document can never break rendering.
+function mergeCvData(fresh) {
+  return {
+    ...initialCvData,
+    ...fresh,
+    contact: { ...initialCvData.contact, ...(fresh.contact || {}) },
+    download: { ...initialCvData.download, ...(fresh.download || {}) },
+    footer: { ...initialCvData.footer, ...(fresh.footer || {}) },
+    nav: asArray(fresh.nav, initialCvData.nav),
+    coreSkills: asArray(fresh.coreSkills, initialCvData.coreSkills),
+    languages: asArray(fresh.languages, initialCvData.languages),
+    experience: asArray(fresh.experience, initialCvData.experience),
+    education: asArray(fresh.education, initialCvData.education),
+    ai: asArray(fresh.ai, []),
+    currentlyLearning: asArray(fresh.currentlyLearning, []),
+    certifications: asArray(fresh.certifications, []),
+    training: asArray(fresh.training, []),
+  };
 }
 
 function getInitialTheme() {
@@ -25,14 +52,50 @@ function getInitialTheme() {
     const saved = window.localStorage.getItem(THEME_KEY);
     if (saved === "dark") return true;
     if (saved === "light") return false;
-  } catch (e) {}
+  } catch {
+    // localStorage unavailable (private mode, blocked storage): use the system preference.
+  }
   // No explicit choice saved yet: fall back to system preference.
   return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
 }
 
 export default function CV() {
+  const [cvData, setCvData] = useState(initialCvData);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchLatestCv() {
+      try {
+        const response = await fetch(CV_API_URL);
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+        }
+        const freshCvData = await response.json();
+
+        // Only replace the bundled data when a valid object arrived
+        if (isMounted && freshCvData && typeof freshCvData === "object" && freshCvData.name) {
+          setCvData(mergeCvData(freshCvData));
+        }
+      } catch (error) {
+        // If the API is unavailable the visitor does not notice:
+        // the bundled initialCvData stays on screen.
+        console.warn("Could not load the latest CV, keeping the bundled version:", error);
+      }
+    }
+
+    fetchLatestCv();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const [dark, setDark] = useState(getInitialTheme);
-  const [showBackToTop, setShowBackToTop] = useState(false);
+  // Without IntersectionObserver the footer cannot be watched, so show the button permanently.
+  const [showBackToTop, setShowBackToTop] = useState(
+    () => typeof window !== "undefined" && !("IntersectionObserver" in window)
+  );
   const footerRef = useRef(null);
   const entryRefs = useRef([]);
   const closingIndexRef = useRef(null);
@@ -74,16 +137,15 @@ export default function CV() {
   useEffect(() => {
     try {
       window.localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
-    } catch (e) {}
+    } catch {
+      // localStorage unavailable: the theme just won't persist across reloads.
+    }
   }, [dark]);
 
   useEffect(() => {
     const footer = footerRef.current;
     if (!footer) return undefined;
-    if (!("IntersectionObserver" in window)) {
-      setShowBackToTop(true);
-      return undefined;
-    }
+    if (!("IntersectionObserver" in window)) return undefined;
 
     const observer = new IntersectionObserver(([entry]) => {
       setShowBackToTop(entry.isIntersecting);
@@ -267,9 +329,10 @@ export default function CV() {
                       >
                         <div className="cv-entry-collapse-inner">
                           <ul className="cv-entry-bullets">
-                            {job.bullets.map((bullet, i) => {
-                              const text = typeof bullet === "string" ? bullet : bullet.text;
-                              const subBullets = typeof bullet === "string" ? [] : bullet.subBullets;
+                            {asArray(job.bullets, []).map((bullet, i) => {
+                              const text = typeof bullet === "string" ? bullet : bullet?.text ?? "";
+                              const subBullets =
+                                typeof bullet === "string" ? [] : asArray(bullet?.subBullets, []);
 
                               return (
                                 <li key={i}>
@@ -277,7 +340,7 @@ export default function CV() {
                                   {subBullets.length > 0 && (
                                     <ul className="cv-entry-sub-bullets">
                                       {subBullets.map((subBullet, subIndex) => (
-                                        <li key={subIndex}>{renderWithBoldPhrases(subBullet)}</li>
+                                        <li key={subIndex}>{renderWithBoldPhrases(String(subBullet ?? ""))}</li>
                                       ))}
                                     </ul>
                                   )}
@@ -342,7 +405,8 @@ export default function CV() {
                 <li key={technology}>{technology}</li>
               ))}
             </ul>
-            <span> | v{packageJson.version}</span>
+            <span> | {APP_VERSION}</span>            
+            <span>Serverless, decoupled portfolio web application featuring an AI-powered (Gemini API) content processing pipeline built on Google Docs, Azure Cosmos DB NoSQL storage, an Azure Functions REST API layer, and a React (Vite) frontend</span>
           </div>
           <ul className="cv-footer-nav">
             {cvData.nav.map((item) => (
