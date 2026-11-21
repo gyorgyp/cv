@@ -20,6 +20,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Must be set for both "npm run build" and "npm run preview" (PDF step),
+      # otherwise preview serves from / and the /cv/ assets 404, giving a blank PDF.
+      VITE_BASE: /cv/
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,8 +54,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          VITE_BASE: /cv/
 
       - name: Generate PDF
         run: |
@@ -77,6 +79,8 @@ jobs:
           try {
             const page = await browser.newPage();
             await page.goto('http://127.0.0.1:3000/cv/', { waitUntil: 'networkidle2' });
+            // Fail the build instead of publishing a blank PDF if the app did not render.
+            await page.waitForSelector('.cv-entry', { timeout: 15000 });
             await page.pdf({
               path: 'dist/CV_Peter_GYORGY.pdf',
               format: 'A4',
