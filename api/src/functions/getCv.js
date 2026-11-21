@@ -1,6 +1,22 @@
 const { app } = require("@azure/functions");
 const { CosmosClient } = require("@azure/cosmos");
 
+// Origins allowed to call the API from the browser (CORS). The SWA site itself is same-origin and needs no entry.
+// Extra origins can be added without a code change via the CORS_ALLOWED_ORIGINS app setting (comma-separated).
+const ALLOWED_ORIGINS = [
+  "https://gyorgyp.github.io",
+  ...(process.env.CORS_ALLOWED_ORIGINS || "").split(",").map((origin) => origin.trim()).filter(Boolean)
+];
+
+function corsHeaders(request) {
+  const origin = request.headers.get("origin");
+  // Vary: Origin keeps caches from serving one origin's response to another.
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    return { "Access-Control-Allow-Origin": origin, "Vary": "Origin" };
+  }
+  return { "Vary": "Origin" };
+}
+
 const REQUIRED_SETTINGS = ["COSMOS_ENDPOINT", "COSMOS_KEY", "COSMOS_DB_ID", "COSMOS_CONTAINER_ID"];
 
 // Created lazily and cached at module level, so the connection is reused across invocations.
@@ -30,6 +46,8 @@ app.http("getCv", {
   authLevel: "anonymous",
   route: "cv",
   handler: async (request, context) => {
+    const cors = corsHeaders(request);
+
     try {
       const container = getContainer();
 
@@ -39,6 +57,7 @@ app.http("getCv", {
       if (!resource) {
         return {
           status: 404,
+          headers: cors,
           jsonBody: { error: "CV document is missing." }
         };
       }
@@ -56,6 +75,7 @@ app.http("getCv", {
       return {
         status: 200,
         headers: {
+          ...cors,
           // Browsers and the SWA edge may reuse the response for 5 minutes, saving Cosmos DB reads.
           //"Cache-Control": "public, max-age=300"
           "Cache-Control": "no-cache"
@@ -66,6 +86,7 @@ app.http("getCv", {
       context.error("Failed to load the CV from Cosmos DB:", error);
       return {
         status: 500,
+        headers: cors,
         jsonBody: { error: "Server issue occurred while loading the CV." }
       };
     }
