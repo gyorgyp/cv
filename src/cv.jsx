@@ -375,7 +375,7 @@ export default function CV() {
               ))}
             </ul>
             <span> | {APP_VERSION}</span>            
-            <span>Serverless, decoupled portfolio web application featuring an AI-powered (Gemini API) content processing pipeline built on Google Docs, Azure Cosmos DB NoSQL storage, an Azure Functions REST API layer, and a React (Vite) frontend</span>
+            <span>Serverless portfolio with an AI-powered CV pipeline (Google Docs, Gemini API, Azure Cosmos DB), an Azure Functions API, and a React (Vite) frontend with browser-cached CV data and on-demand PDF generation.</span>                  
           </div>
           <ul className="cv-footer-nav">
             {(cvData.nav.length ? cvData.nav : UI.nav).map((item) => (
