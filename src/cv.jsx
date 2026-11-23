@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { cvData as initialCvData } from "./assets/cvData"; // Fallback data
+import { useCv } from "./hooks/useCvData";
+import { CvSkeleton } from "./skeleton/cvSkeleton";
+import { CvError } from "./error/cvError";
+import { DownloadPdf } from "./pdf/downloadPdf";
+import { UI } from "./config/uiConfig";
 import "./cv.css";
+import "./skeleton/cvSkeleton.css";
+import "./error/cvError.css";
 
 // API URL that works in production and in local development (Vite proxies /api to the Functions host)
 const CV_API_URL = import.meta.env.VITE_CV_API_URL || "/api/cv";
@@ -9,7 +15,7 @@ const CV_API_URL = import.meta.env.VITE_CV_API_URL || "/api/cv";
 const APP_VERSION = import.meta.env.VITE_APP_VERSION || `v${__APP_VERSION__}`;
 
 const THEME_KEY = "pg-cv-theme";
-const BOLD_PHRASES = ["Azure Bot Services","Chatbot development","Automated","Developed","Built","pipeline using PowerShell","Eliminated routine on-site client visits","improving user experience (UX)","80% improvement","naming convention","positive feedback","REST API","microservices","Virtual Machines","Icinga","Collaborated with","daily standups within cross-country teams","Migrated","pipelines","root causes",];
+const BOLD_PHRASES = ["Azure Bot Services","Chatbot development","Automated","Developed","Built","pipeline using PowerShell","Eliminated routine on-site client visits","improving user experience (UX)","80% improvement","naming convention","positive feedback","REST API","microservices","Virtual Machines","Icinga","Collaborated with","daily standups within cross-country teams","Migrated","pipelines","root causes"];
 const BOLD_PHRASES_PATTERN = new RegExp(
   `(${BOLD_PHRASES.slice()
     .sort((first, second) => second.length - first.length)
@@ -26,26 +32,6 @@ function renderWithBoldPhrases(text) {
 
 const asArray = (value, fallback) => (Array.isArray(value) ? value : fallback);
 
-// Merge API data over the bundled fallback so a partial or malformed document can never break rendering.
-function mergeCvData(fresh) {
-  return {
-    ...initialCvData,
-    ...fresh,
-    contact: { ...initialCvData.contact, ...(fresh.contact || {}) },
-    download: { ...initialCvData.download, ...(fresh.download || {}) },
-    footer: { ...initialCvData.footer, ...(fresh.footer || {}) },
-    nav: asArray(fresh.nav, initialCvData.nav),
-    coreSkills: asArray(fresh.coreSkills, initialCvData.coreSkills),
-    languages: asArray(fresh.languages, initialCvData.languages),
-    experience: asArray(fresh.experience, initialCvData.experience),
-    education: asArray(fresh.education, initialCvData.education),
-    ai: asArray(fresh.ai, []),
-    currentlyLearning: asArray(fresh.currentlyLearning, []),
-    certifications: asArray(fresh.certifications, []),
-    training: asArray(fresh.training, []),
-  };
-}
-
 function getInitialTheme() {
   if (typeof window === "undefined") return false;
   try {
@@ -60,36 +46,8 @@ function getInitialTheme() {
 }
 
 export default function CV() {
-  const [cvData, setCvData] = useState(initialCvData);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function fetchLatestCv() {
-      try {
-        const response = await fetch(CV_API_URL);
-        if (!response.ok) {
-          throw new Error(`HTTP error: ${response.status}`);
-        }
-        const freshCvData = await response.json();
-
-        // Only replace the bundled data when a valid object arrived
-        if (isMounted && freshCvData && typeof freshCvData === "object" && freshCvData.name) {
-          setCvData(mergeCvData(freshCvData));
-        }
-      } catch (error) {
-        // If the API is unavailable the visitor does not notice:
-        // the bundled initialCvData stays on screen.
-        console.warn("Could not load the latest CV, keeping the bundled version:", error);
-      }
-    }
-
-    fetchLatestCv();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const { data: cvData, status, error, retry } = useCv(CV_API_URL);
+  const hasData = Boolean(cvData);
 
   const [dark, setDark] = useState(getInitialTheme);
   // Without IntersectionObserver the footer cannot be watched, so show the button permanently.
@@ -101,7 +59,7 @@ export default function CV() {
   const closingIndexRef = useRef(null);
   const pendingScrollIndexRef = useRef(null);
   const scrollAnimationFrameRef = useRef(null);
-  // Accordion: only one experience entry open at a time; first one open by default.
+  // Accordion: only one experience entry open at a time; no one open by default.
   const [openIndex, setOpenIndex] = useState(-1);
 
   function scrollToY(targetY) {
@@ -152,8 +110,16 @@ export default function CV() {
     });
     observer.observe(footer);
     return () => observer.disconnect();
-  }, []);
+  }, [hasData]); // the footer only exists once the CV data has loaded
 
+  // Loading skeleton or error state
+  if (!cvData) {
+    return status === "error"
+      ? <CvError dark={dark} error={error} onRetry={retry} />
+      : <CvSkeleton dark={dark} />;
+  }
+
+  // CV page with data
   return (
     <div id="top" className={`cv-root ${dark ? "theme-dark" : "theme-light"}`}>
       <div className="cv-shell">
@@ -209,12 +175,15 @@ export default function CV() {
                 </a>
               </li>
               <li>
-                <a className="cv-download" href={`${import.meta.env?.BASE_URL ?? "/"}${cvData.download.file}`} download>
-                  <svg className="cv-contact-icon cv-contact-icon-download" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <DownloadPdf
+                  className="cv-download"
+                  data={cvData}
+                  icon={
+                    <svg className="cv-contact-icon cv-contact-icon-download" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3" />
                   </svg>
-                  {cvData.download.label}
-                </a>
+                  }
+                />
               </li>
             </ul>
           </div>           
@@ -409,7 +378,7 @@ export default function CV() {
             <span>Serverless, decoupled portfolio web application featuring an AI-powered (Gemini API) content processing pipeline built on Google Docs, Azure Cosmos DB NoSQL storage, an Azure Functions REST API layer, and a React (Vite) frontend</span>
           </div>
           <ul className="cv-footer-nav">
-            {cvData.nav.map((item) => (
+            {(cvData.nav.length ? cvData.nav : UI.nav).map((item) => (
               <li key={item.id}>
                 <a href={`#${item.id}`}>{item.label}</a>
               </li>
@@ -424,7 +393,7 @@ export default function CV() {
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M12 19V5m-7 7 7-7 7 7" />
             </svg>
-            <span>{cvData.footer.backToTop}</span>
+            <span>{cvData.footer?.backToTop ?? UI.backToTop}</span>
           </a>
         </footer>
       </div>

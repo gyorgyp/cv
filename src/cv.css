@@ -87,15 +87,18 @@
  
 }
 
-.cv-contact-list a {
+.cv-contact-list a,
+.cv-contact-list button.cv-download {
   display: flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
 }
-.cv-contact-list a:hover { color: var(--accent); }
+.cv-contact-list a:hover,
+.cv-contact-list button.cv-download:hover:not(:disabled) { color: var(--accent); }
 
-.cv-contact-list a.cv-download {
+.cv-contact-list a.cv-download,
+.cv-contact-list button.cv-download {
   font-weight: 500;
 }
 

@@ -7,8 +7,8 @@ A responsive, single-page CV built with React and Vite. It presents professional
 - Responsive layout with light and dark themes; the selected theme is saved in browser storage, with the system theme used on first visit.
 - Expandable experience entries.
 - Sections for profile, skills, AI, current learning, languages, education, and certifications and training.
-- Live CV data loaded from the `/api/cv` endpoint (Azure Functions + Cosmos DB), with the bundled data in `src/assets/cvData.js` shown instantly and kept as a fallback.
-- Contact links and a downloadable PDF on the deployed site.
+- CV data loaded from the `/api/cv` endpoint (Azure Functions + Cosmos DB), with the last successful response cached in browser storage.
+- Contact links and an on-demand PDF generated in the browser from the CV data currently displayed.
 - Static production output served by Nginx, with optional Docker deployment.
 
 ## Tech stack
@@ -16,7 +16,7 @@ A responsive, single-page CV built with React and Vite. It presents professional
 - React 19
 - Vite 8
 - JavaScript and CSS
-- Azure Functions v4 (Node.js) and Azure Cosmos DB (optional API)
+- Azure Functions v4 (Node.js) and Azure Cosmos DB
 - Nginx and Docker (optional)
 
 ## Run locally
@@ -30,9 +30,9 @@ npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite (by default, <http://localhost:5173>).
+Open the local URL printed by Vite (by default, <http://localhost:5173>). The frontend requests `/api/cv`; during development, Vite proxies this to the local Functions host at `http://localhost:7071`.
 
-The site works without the API: if `/api/cv` is not reachable, it shows the bundled data from `src/assets/cvData.js`.
+The API is needed to load CV data on a first visit. If the API is unavailable, a previously cached response remains visible; without cached data, the page shows an error with a retry option.
 
 ### Run the API locally (optional)
 
@@ -70,7 +70,13 @@ Requirements: [Azure Functions Core Tools v4](https://learn.microsoft.com/azure/
 
 ### API URL
 
-The frontend calls the URL in `VITE_CV_API_URL`, or `/api/cv` when it is not set. GitHub Pages and the Docker image do not host the API, so they show the bundled data unless `VITE_CV_API_URL` points to a deployed Function; in that case the Function must allow the site's origin (CORS).
+The frontend calls the URL in `VITE_CV_API_URL`, or `/api/cv` when it is not set. This value is embedded at build time.
+
+- The GitHub Pages workflow points `VITE_CV_API_URL` to the Azure Static Web App API. The API must allow the GitHub Pages origin through CORS.
+- The Azure Static Web Apps workflow deploys the API from `api/`; configure its `COSMOS_*` application settings.
+- The Docker image serves only the static frontend. Configure a reachable API URL at build time, or route `/api` to an API separately.
+
+If the API is unavailable, the app uses the last successful response cached in that browser, if one exists. There is no bundled CV-data fallback.
 
 ## Scripts
 
@@ -81,7 +87,7 @@ The frontend calls the URL in `VITE_CV_API_URL`, or `/api/cv` when it is not set
 | `npm run preview` | Preview the production build locally. |
 | `npm run lint` | Run ESLint. |
 
-The regular Vite build does not generate the PDF. The GitHub Pages workflow generates `CV_Peter_GYORGY.pdf` and includes it in the deployed site. The API is not available during that build, so the PDF is generated from the bundled data.
+The build does not generate or include a static PDF. When a visitor clicks the download button, the browser loads the PDF renderer and generates a PDF from the CV data currently displayed on the page.
 
 ## Deploy
 
@@ -91,7 +97,7 @@ The GitHub Actions workflow in `.github/workflows/github.yml` builds and deploys
 
 ### Azure Static Web Apps
 
-`.github/workflows/azure-static-web-apps-zealous-bay-03ae5da0f.yml` deploys the frontend to Azure Static Web Apps. It currently runs only for pull requests to `main` (the push trigger is commented out), and `api_location` is empty, so the API in `api/` is not deployed by this workflow. To deploy the API with the site, set `api_location: "api"` and add the `COSMOS_*` settings to the Static Web App's application settings.
+`.github/workflows/azure-static-web-apps-zealous-bay-03ae5da0f.yml` deploys the frontend and the API in `api/` to Azure Static Web Apps on pushes and pull requests to `main`. Configure the `COSMOS_*` application settings on the Static Web App for the API to read CV data.
 
 ### Docker
 
@@ -118,9 +124,11 @@ The Docker image serves only the static site; it does not include the API.
 
 ## Customize the CV
 
-- Edit the bundled (fallback) CV content in `src/assets/cvData.js`. When the API is available, the live data from Cosmos DB replaces it.
-- Update markup and interactions in `src/cv.jsx`.
-- Change styles and responsive behavior in `src/cv.css`.
+- The CV content is maintained in Google Docs and synchronized to Cosmos DB; the Google Apps Script pipeline is not in this repository.
+- Update the page markup and interactions in `src/cv.jsx`.
+- Change the PDF layout in `src/pdf/cvPdf.jsx`.
+- Update default UI labels and navigation in `src/config/uiConfig.js`.
+- Change styles and responsive behavior in `src/cv.css`; loading and error state styles are in their respective folders.
 - Update the page title or favicon in `index.html`; static icons are in `public/`.
 
 ## Project structure
@@ -135,9 +143,16 @@ The Docker image serves only the static site; it does not include the API.
 │   └── package.json
 ├── public/              # Static icons
 ├── src/
-│   ├── assets/           # CV data (cvData.js) and images
+│   ├── assets/           # Images and static assets
+│   ├── config/
+│   │   └── uiConfig.js   # Default UI labels and navigation
+│   ├── error/            # CV loading error component and styles
+│   ├── hooks/
+│   │   └── useCvData.js  # API loading, validation, and browser cache
+│   ├── pdf/              # On-demand PDF download and document layout
+│   ├── skeleton/         # Loading skeleton component and styles
 │   ├── cv.css            # Layout, themes, and responsive styles
-│   ├── cv.jsx            # CV page, API loading, and interactions
+│   ├── cv.jsx            # CV page and interactions
 │   └── main.jsx          # React entry point
 ├── Dockerfile            # Multi-stage build and Nginx runtime
 ├── compose.yaml          # Local Docker Compose configuration
@@ -155,7 +170,9 @@ The CV content is maintained in Google Docs and flows to the site through an AI 
    - A custom 🚀 CV Sync menu in the Google Docs document starts the synchronization.
    - The script sends the document text to the Gemini REST API with an `application/json` response format and `temperature: 0`, so the output is predictable.
    - The response is validated against a Draft 2020-12 JSON schema (`cv.schema.json`), converted to a Gemini-compatible format; post-processing restores the bullets array so the result matches the schema exactly.
-   - If a model is overloaded (503) or rate-limited (429), the script falls back to the next model (`gemini-3-flash-preview`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`).
+   - If a model is overloaded (503) or rate-limited (429), the script falls back to the next model (`gemini-3.5-flash-lite`,`gemini-3-flash-preview`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`).
+   - Based on my experience so far, currently only `gemini-3.5-flash-lite` is being used.
+
    - API keys are stored in Apps Script Script Properties, not in the code.
 
 2. **Storage (Azure Cosmos DB)**
@@ -170,6 +187,9 @@ The CV content is maintained in Google Docs and flows to the site through an AI 
    - Responses are currently sent with `Cache-Control: no-cache`; a 5-minute `max-age` is prepared in the code for production.
 
 4. **Frontend (React, Vite)**
-   - The bundled data (imported from `src/assets/cvData.js` as `initialCvData`) renders immediately, and a `useEffect` hook fetches the latest data from the API in the background.
-   - The API response is merged with the bundled structure, so missing optional sections (`ai`, `currentlyLearning`, `certifications`, `training`) do not break rendering.
+   - `src/hooks/useCvData.js` fetches `/api/cv`, validates and normalizes the response, and caches the raw response in `localStorage`.
+   - On repeat visits, cached CV data is displayed immediately while the API is checked again. With no cached data, the app shows a skeleton while loading and an error with a retry option if loading fails.
+   - The API uses `Cache-Control: no-cache`; browser storage provides the immediate repeat-visit cache.
    - During development, Vite proxies `/api` to the local Functions host at `localhost:7071`.
+   - The PDF is generated in the browser from the displayed CV data only after the download button is clicked; the PDF renderer is dynamically loaded at that point.
+   

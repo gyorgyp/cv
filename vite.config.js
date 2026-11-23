@@ -21,4 +21,10 @@ export default defineConfig({
       },
     },
   },
+  // vite.config.js
+  build: {
+    // @react-pdf/renderer (~1.2 MB, ~445 kB gzip) is loaded lazily on the first PDF
+    // download, so it does not affect the initial page load (~77 kB gzip).
+    chunkSizeWarningLimit: 1250,
+  }
 })

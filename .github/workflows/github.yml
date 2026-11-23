@@ -58,61 +58,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Generate PDF
-        run: |
-          npm install --no-save --package-lock=false puppeteer
-
-          npm run preview -- --host 127.0.0.1 --port 3000 &
-          for attempt in {1..30}; do
-            if curl --silent --fail http://127.0.0.1:3000/cv/ > /dev/null; then
-              break
-            fi
-            sleep 1
-          done
-          curl --silent --show-error --fail http://127.0.0.1:3000/cv/ > /dev/null
-
-          node --input-type=module <<'NODE'
-          import puppeteer from 'puppeteer';
-
-          const browser = await puppeteer.launch({
-            headless: true,
-            // --disable-web-security: the page is served from 127.0.0.1 here, which is not a CORS-allowed origin
-            // of the API; this lets this local, CI-only render load the live data. It does not affect the real site.
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security'],
-          });
-
-          try {
-            const page = await browser.newPage();
-            // Wait for the live CV from the API so the PDF matches the site.
-            // If the API is down, continue: the page still renders the bundled fallback data.
-            const apiResponse = page
-              .waitForResponse((r) => r.url() === process.env.VITE_CV_API_URL, { timeout: 15000 })
-              .then((r) => console.log(`CV API: HTTP ${r.status()}`))
-              .catch(() => console.log('CV API did not respond, PDF uses the bundled data'));
-            await page.goto('http://127.0.0.1:3000/cv/', { waitUntil: 'networkidle2' });
-            await apiResponse;
-            // Fail the build instead of publishing a blank PDF if the app did not render.
-            await page.waitForSelector('.cv-entry', { timeout: 15000 });
-            await page.pdf({
-              path: 'dist/CV_Peter_GYORGY.pdf',
-              format: 'A4',
-              printBackground: true,
-            });
-          } finally {
-            await browser.close();
-          }
-          NODE
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-
-      - name: Upload PDF as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: CV-PDF-Version
-          path: dist/CV_Peter_GYORGY.pdf
 
   deploy:
     needs: build

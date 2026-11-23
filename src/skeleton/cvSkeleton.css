@@ -1,0 +1,16 @@
+/* Loading skeleton and the PDF button reset. Import after cv.css. */
+.cv-skel { background: currentColor; opacity: 0.09; border-radius: 6px; height: 14px; margin: 10px 0; animation: cv-skel-pulse 1.4s ease-in-out infinite; }
+.cv-skel-name { height: 34px; width: min(320px, 70%); }
+.cv-skel-role { width: min(220px, 50%); }
+.cv-skel-title { width: 90px; height: 12px; }
+.cv-skel-line { width: 100%; }
+.cv-skel-line.short { width: 60%; }
+.cv-skel-block { height: 84px; margin: 14px 0; }
+@keyframes cv-skel-pulse { 50% { opacity: 0.16; } }
+@media (prefers-reduced-motion: reduce) { .cv-skel { animation: none; } }
+
+.cv-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* The download control is now a <button>; make it look like the link it replaces.
+   If your .cv-download rules are scoped to `a`, add `button` to those selectors. */
+button.cv-download { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+button.cv-download:disabled { opacity: 0.6; cursor: progress; }
