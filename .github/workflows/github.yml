@@ -21,11 +21,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Must be set for both "npm run build" and "npm run preview" (PDF step),
-      # otherwise preview serves from / and the /cv/ assets 404, giving a blank PDF.
+      # GitHub Pages serves the site under /cv/.
       VITE_BASE: /cv/
       # GitHub Pages has no API of its own: load the live CV from the Azure Static Web App.
-      # Needs the CORS header in api/src/functions/getCv.js; falls back to src/assets/cvData.js if unreachable.
+      # Needs the CORS header in api/src/functions/getCv.js. If unreachable, visitors see their cached CV or an error with retry.
       VITE_CV_API_URL: https://zealous-bay-03ae5da0f.4.azurestaticapps.net/api/cv
     steps:
       - name: Checkout

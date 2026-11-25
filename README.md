@@ -74,7 +74,7 @@ The frontend calls the URL in `VITE_CV_API_URL`, or `/api/cv` when it is not set
 
 - The GitHub Pages workflow points `VITE_CV_API_URL` to the Azure Static Web App API. The API must allow the GitHub Pages origin through CORS.
 - The Azure Static Web Apps workflow deploys the API from `api/`; configure its `COSMOS_*` application settings.
-- The Docker image serves only the static frontend. Configure a reachable API URL at build time, or route `/api` to an API separately.
+- The frontend Docker image proxies `/api` to the API set in `API_UPSTREAM` at runtime (see [Docker](#docker)).
 
 If the API is unavailable, the app uses the last successful response cached in that browser, if one exists. There is no bundled CV-data fallback.
 
@@ -101,26 +101,47 @@ The GitHub Actions workflow in `.github/workflows/github.yml` builds and deploys
 
 ### Docker
 
-Build and run the production site with Docker Compose:
+The frontend and the API have separate images and can be deployed together or on their own.
+
+Set the API settings in the root `.env` file (or in your shell):
+
+```text
+COSMOS_ENDPOINT=https://<account>.documents.azure.com:443/
+COSMOS_KEY=<cosmos-key>
+COSMOS_DB_ID=cv
+COSMOS_CONTAINER_ID=cvContainer
+```
+
+Build and run both with Docker Compose:
 
 ```bash
 docker compose up --build -d
 ```
 
-Open <http://localhost:8080>. Stop the container with:
+Open <http://localhost:8080>. Nginx proxies `/api` to the API container, so the browser calls the API on the same origin and no CORS setting is needed. The API is also reachable directly at <http://localhost:7071/api/cv>. Stop everything with `docker compose down`.
 
-```bash
-docker compose down
-```
+Start only one of them with `docker compose up --build -d cv` or `docker compose up --build -d api`.
 
-To run it without Compose:
+#### Frontend image
 
 ```bash
 docker build -t cv .
-docker run --rm -p 8080:80 cv
+docker run --rm -p 8080:80 -e API_UPSTREAM=http://<api-host>:80 cv
 ```
 
-The Docker image serves only the static site; it does not include the API.
+- `API_UPSTREAM` (runtime, default `http://api:80`): where Nginx proxies `/api`. For an HTTPS API use its origin, for example `https://<app>.azurestaticapps.net`. The host name is resolved through DNS (not `/etc/hosts`), so use a DNS name such as a Compose service name or `host.docker.internal`, or an IP address.
+- Nginx starts even if the API host does not exist. While the API is missing or down, `/api` answers `503`, and the page shows "service temporarily unavailable" (or the visitor's cached CV).
+- `VITE_CV_API_URL` (build argument, optional): calls the API directly from the browser instead of through the proxy, for example `docker build --build-arg VITE_CV_API_URL=https://<api-host>/api/cv -t cv .`. The API must then allow the frontend origin in `CORS_ALLOWED_ORIGINS`.
+- `VITE_APP_VERSION` (build argument, optional): the version label shown on the page.
+
+#### API image
+
+```bash
+docker build -t cv-api ./api
+docker run --rm -p 7071:80 -e COSMOS_ENDPOINT -e COSMOS_KEY -e COSMOS_DB_ID -e COSMOS_CONTAINER_ID cv-api
+```
+
+The endpoint is available at <http://localhost:7071/api/cv>. Set `CORS_ALLOWED_ORIGINS` (comma-separated) only if browsers call it from another origin.
 
 ## Customize the CV
 
@@ -139,6 +160,7 @@ The Docker image serves only the static site; it does not include the API.
 ├── api/                 # Azure Functions app (GET /api/cv from Cosmos DB)
 │   ├── src/functions/
 │   │   └── getCv.js      # HTTP trigger for the CV endpoint
+│   ├── Dockerfile        # Azure Functions API image
 │   ├── host.json
 │   └── package.json
 ├── public/              # Static icons
@@ -154,9 +176,10 @@ The Docker image serves only the static site; it does not include the API.
 │   ├── cv.css            # Layout, themes, and responsive styles
 │   ├── cv.jsx            # CV page and interactions
 │   └── main.jsx          # React entry point
-├── Dockerfile            # Multi-stage build and Nginx runtime
-├── compose.yaml          # Local Docker Compose configuration
-├── nginx.conf            # Static hosting and SPA fallback
+├── Dockerfile            # Multi-stage frontend build and Nginx runtime
+├── compose.yaml          # Frontend and API Docker Compose services
+├── nginx/
+│   └── default.conf.template # Nginx: static hosting, SPA fallback, /api proxy
 ├── index.html
 ├── package.json
 └── vite.config.js
@@ -192,4 +215,4 @@ The CV content is maintained in Google Docs and flows to the site through an AI 
    - The API uses `Cache-Control: no-cache`; browser storage provides the immediate repeat-visit cache.
    - During development, Vite proxies `/api` to the local Functions host at `localhost:7071`.
    - The PDF is generated in the browser from the displayed CV data only after the download button is clicked; the PDF renderer is dynamically loaded at that point.
-   
+   

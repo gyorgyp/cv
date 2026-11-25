@@ -1,6 +1,30 @@
+# Runs the frontend and the API together: docker compose up --build -d
+# Either one alone:                       docker compose up --build -d cv   (or: api)
+# No depends_on on purpose: the frontend starts without the API and answers /api with 503.
 services:
   cv:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_APP_VERSION: ${VITE_APP_VERSION:-}
     ports:
       - "8080:80"
+    environment:
+      API_UPSTREAM: ${API_UPSTREAM:-http://api:80}
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    # Only needed to call the API directly; the frontend reaches it on the internal network.
+    ports:
+      - "7071:80"
+    environment:
+      COSMOS_ENDPOINT: ${COSMOS_ENDPOINT:-}
+      COSMOS_KEY: ${COSMOS_KEY:-}
+      COSMOS_DB_ID: ${COSMOS_DB_ID:-}
+      COSMOS_CONTAINER_ID: ${COSMOS_CONTAINER_ID:-}
+      # Only needed when a browser calls the API from another origin (not through the nginx proxy).
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-}
     restart: unless-stopped
